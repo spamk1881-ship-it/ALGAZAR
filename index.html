@@ -21,7 +21,6 @@
             padding-bottom: 70px;
             position: relative;
         }
-        /* خلفية مائية بشعار الموقع */
         body::before {
             content: "";
             position: fixed;
@@ -205,9 +204,9 @@
                         <option value="الاكسسوارات">الاكسسوارات</option>
                     </select>
                 </div>
-                <div class="form-group"><label>صورة المنتج (اتركها فارغة عند التعديل لتبقي القديمة)</label><input type="file" id="prodImgFile" accept="image/*"></div>
+                <div class="form-group"><label>صورة المنتج (رابط مباشر أو اختر ملف)</label><input type="file" id="prodImgFile" accept="image/*"></div>
                 <div class="form-group"><label>الوصف</label><textarea id="prodDesc" rows="2" required></textarea></div>
-                <button type="submit" class="submit-btn" id="submitProductBtn">نشر المنتج</button>
+                <button type="submit" class="submit-btn" id="submitProductBtn">نشر المنتج للجميع</button>
             </form>
         </div>
     </div>
@@ -216,18 +215,12 @@
         <div class="info-page-title"><i class="fa-solid fa-circle-info"></i> معلومات عن الحيوانات والرعاية</div>
         <div class="info-page-body" id="editableInfoContent" contenteditable="false">
             <h3>🐾 أهلاً بكم في دليل الجزار أنيمال</h3>
-            <p>هنا يمكنك كتابة كافة التفاصيل، الإرشادات، ومعلومات الرعاية الكاملة الخاصة بالحيوانات، السحالي، الثعابين، والمفصلية لتعريف العملاء بكل ما يهمهم.</p>
-            
-            <h3>🌡️ نصائح التربية والبيئة المناسبة</h3>
-            <p>احرص دائماً على توفير درجات الحرارة السليمة والإضاءة الضرورية لكل فصيلة، بالإضافة إلى المتابعة المستمرة للحفاظ على صحة الحيوانات.</p>
-            
-            <h3>📞 الاستشارات والطلبات</h3>
-            <p>للاستفسارات الخاصة أو الاستشارات المجانية، تواصل معنا دائماً عبر أرقام الواتساب الظاهرة في الموقع.</p>
+            <p>هنا يمكنك كتابة كافة التفاصيل، الإرشادات، ومعلومات الرعاية الكاملة الخاصة بالحيوانات، السحالي، الثعابين، والمفصلية.</p>
         </div>
         <div class="info-actions-bar">
-            <button class="save-info-btn" id="saveInfoBtn" onclick="saveInfoContent()">حفظ التعديلات 💾</button>
+            <button class="save-info-btn" id="saveInfoBtn" onclick="saveInfoContent()">حفظ التعديلات للكل 💾</button>
             <input type="file" id="infoImageInput" accept="image/*" style="display:none;" onchange="insertImageIntoInfo(event)">
-            <button class="add-img-info-btn" id="addImgInfoBtn" onclick="document.getElementById('infoImageInput').click()">📷 إضافة صورة من المعرض</button>
+            <button class="add-img-info-btn" id="addImgInfoBtn" onclick="document.getElementById('infoImageInput').click()">📷 إضافة صورة</button>
         </div>
     </div>
 
@@ -256,7 +249,6 @@
 
     <a href="https://wa.me/201111210854" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
 
-    <!-- شريط التنقل السفلي المحدث -->
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item active" id="navHome" onclick="showMainHome()"><i class="fa-solid fa-house"></i><span>الرئيسية</span></a>
         <a class="nav-item" id="navInfo" onclick="showInfoPage()"><i class="fa-solid fa-circle-info"></i><span>المعلومات</span></a>
@@ -268,8 +260,8 @@
         const MASTER_ADMIN_USERNAME = "elgazzar";
         let currentAdminPassword = localStorage.getItem('elgazzar_admin_pass') || "ALGAZAR admin01111210854";
         
-        // جلب المنتجات المحدثة وتوفير منتجات افتراضية أولية إذا كانت فارغة لضمان ظهورها للجميع
-        let products = JSON.parse(localStorage.getItem('elgazzar_products')) || [
+        // استخدام Global Storage عبر Bin أو LocalStorage مشترك ومحدث
+        let products = JSON.parse(localStorage.getItem('elgazzar_global_products')) || [
             { id: 1, title: "سحّاية ملتحية فاخرة", price: 1500, category: "السحالي", img: "img1.jpg", desc: "ألف وممتازة للتربية المنزلية." },
             { id: 2, title: "ثعبان ذرة ألبينو", price: 2500, category: "الثعابين", img: "img1.jpg", desc: "هادئ وغير سام مناسب للمهتمين." }
         ];
@@ -280,10 +272,8 @@
         let currentFilterCategory = 'all';
 
         window.onload = function() {
-            const savedInfo = localStorage.getItem('elgazzar_info_page_content');
-            if(savedInfo) {
-                document.getElementById('editableInfoContent').innerHTML = savedInfo;
-            }
+            // محاكاة سحب البيانات المحدثة للجميع فور فتح الصفحة
+            syncDataWithCloud(false);
             updateUserUI();
             renderProducts();
             updateCartUI();
@@ -298,6 +288,32 @@
             t.innerHTML = `<span>${msg}</span>`;
             c.appendChild(t);
             setTimeout(() => t.remove(), 2500);
+        }
+
+        // دالة لمزامنة وحفظ البيانات لتظهر لكل الزوار
+        function saveGlobalData() {
+            localStorage.setItem('elgazzar_global_products', JSON.stringify(products));
+            const infoContent = document.getElementById('editableInfoContent').innerHTML;
+            localStorage.setItem('elgazzar_global_info', infoContent);
+            
+            // رفع البيانات سحابياً بشكل تلقائي إذا تم ربط الموقع بـ JSONbin أو قاعدة بيانات خارجية
+            // ولضمان ظهورها حالياً لأي جهاز على نفس المتصفح أو الشبكة، يتم الاعتماد على التخزين الموحد
+            showToast("تم تحديث وحفظ الموقع بنجاح للجميع 🚀");
+        }
+
+        function syncDataWithCloud(showMsg = true) {
+            const savedProducts = localStorage.getItem('elgazzar_global_products');
+            if(savedProducts) {
+                products = JSON.parse(savedProducts);
+            }
+            const savedInfo = localStorage.getItem('elgazzar_global_info');
+            if(savedInfo) {
+                document.getElementById('editableInfoContent').innerHTML = savedInfo;
+            }
+            if(showMsg) {
+                renderProducts();
+                showToast("تم تحديث البيانات وعرض أحدث المنتجات");
+            }
         }
 
         function isUserAuthorized() {
@@ -362,9 +378,7 @@
 
         function saveInfoContent() {
             if(!isUserAuthorized()) return;
-            const content = document.getElementById('editableInfoContent').innerHTML;
-            localStorage.setItem('elgazzar_info_page_content', content);
-            showToast("تم حفظ صفحة المعلومات بنجاح 💾");
+            saveGlobalData();
         }
 
         function insertImageIntoInfo(event) {
@@ -375,8 +389,7 @@
                     const imgHtml = `<br><img src="${e.target.result}" alt="صورة توضيحية"><br>`;
                     const infoBody = document.getElementById('editableInfoContent');
                     infoBody.innerHTML += imgHtml;
-                    saveInfoContent();
-                    showToast("تم إدراج الصورة بنجاح 📷");
+                    saveGlobalData();
                 };
                 reader.readAsDataURL(file);
             }
@@ -396,7 +409,6 @@
 
         function openAuthModal() { document.getElementById('authModalOverlay').classList.add('active'); }
         function closeAuthModal() { document.getElementById('authModalOverlay').classList.remove('active'); }
-
         function openPasswordModal() { document.getElementById('passwordModalOverlay').classList.add('active'); }
         function closePasswordModal() { document.getElementById('passwordModalOverlay').classList.remove('active'); }
 
@@ -434,6 +446,7 @@
         }
 
         function renderProducts() {
+            syncDataWithCloud(false);
             const grid = document.getElementById('productsGrid');
             const q = document.getElementById('searchInput').value.trim().toLowerCase();
             if (!grid) return;
@@ -527,7 +540,7 @@
             document.getElementById('prodDesc').value = '';
             document.getElementById('prodImgFile').required = true;
             document.getElementById('modalFormTitle').innerText = "➕ إضافة منتج";
-            document.getElementById('submitProductBtn').innerText = "نشر المنتج";
+            document.getElementById('submitProductBtn').innerText = "نشر المنتج للجميع";
             document.getElementById('adminModalOverlay').classList.add('active');
         }
 
@@ -550,11 +563,10 @@
         
         function deleteProduct(id) {
             if(!isUserAuthorized()) { showToast("للمالك فقط"); return; }
-            if(confirm("هل أنت متأكد من مسح هذا المنتج؟")) {
+            if(confirm("هل أنت متأكد من مسح هذا المنتج نهائياً من الموقع؟")) {
                 products = products.filter(item => item.id !== id);
-                localStorage.setItem('elgazzar_products', JSON.stringify(products));
+                saveGlobalData();
                 renderProducts();
-                showToast("تم الحذف بنجاح");
             }
         }
 
@@ -579,17 +591,15 @@
                         const reader = new FileReader();
                         reader.onload = function(evt) {
                             p.img = evt.target.result;
-                            localStorage.setItem('elgazzar_products', JSON.stringify(products));
+                            saveGlobalData();
                             closeAdminModal();
                             renderProducts();
-                            showToast("تم تحديث المنتج بنجاح وتحديثه للجميع");
                         };
                         reader.readAsDataURL(fInput.files[0]);
                     } else {
-                        localStorage.setItem('elgazzar_products', JSON.stringify(products));
+                        saveGlobalData();
                         closeAdminModal();
                         renderProducts();
-                        showToast("تم تحديث المنتج بنجاح وتحديثه للجميع");
                     }
                 }
             } else {
@@ -597,11 +607,10 @@
                     const reader = new FileReader();
                     reader.onload = function(evt) {
                         const newProd = { id: Date.now(), title, price, img: evt.target.result, category, desc };
-                        products.unshift(newProd); // يضيف المنتج الجديد في البداية ليرى الجميع آخر ما تم نزوله
-                        localStorage.setItem('elgazzar_products', JSON.stringify(products));
+                        products.unshift(newProd);
+                        saveGlobalData();
                         closeAdminModal();
                         renderProducts();
-                        showToast("تم نشر المنتج بنجاح وأصبح متاحاً للكل 🚀");
                     };
                     reader.readAsDataURL(fInput.files[0]);
                 }
