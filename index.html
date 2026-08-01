@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- أيقونة الموقع (Favicon) -->
+    <link rel="icon" type="image/jpeg" href="img1.jpg">
+
+    <!-- تحسينات محركات البحث (SEO) -->
+    <title>الجزار أنيمال | Elgazzar Animals - متجر الزواحف والنوادر</title>
+    <meta name="description" content="معرض الجزار أنيمال (Elgazzar Animals) لأقوى وأرقى سلالات الزواحف، السلاحف، الثعابين، الحيوانات البرية وتجهيزاتها بأعلى مستويات الرعاية.">
+    <meta name="robots" content="index, follow">
+
+    <!-- خط القاهرة -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <!-- أيقونات FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #0b0f12;
+            --card-bg: #141b22;
+            --primary: #2ec4b6;
+            --accent: #ff9f1c;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --sidebar-bg: #0d131a;
+            --sidebar-hover: #182330;
+            --developer-color: #a855f7;
+            --danger: #ef4444;
+            --whatsapp-btn: #25d366;
+            --negotiable-badge: #10b981;
+        }
+
+        body.light-theme {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-light: #0f172a;
+            --text-muted: #64748b;
+            --border: rgba(0, 0, 0, 0.1);
+            --sidebar-bg: #f1f5f9;
+            --sidebar-hover: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            overflow-x: hidden;
+            padding-bottom: 70px;
+        }
+
+        /* Announcement Bar */
+        .announcement-bar {
+            background: var(--accent);
+            color: #000;
+            text-align: center;
+            padding: 6px 10px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            position: fixed;
+            top: 0; 
+            width: 100%;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 29px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            background: rgba(11, 15, 18, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        .menu-toggle-btn { font-size: 1.4rem; color: var(--text-light); cursor: pointer; }
+        .logo-container { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
+        .logo-text { font-size: 19px; font-weight: 900; color: var(--primary); }
+        .logo-text span { color: var(--accent); }
+
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+
+        .user-auth-btn, .admin-panel-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 6px;
+        }
+
+        .admin-panel-btn { border-color: var(--accent); color: var(--accent); display: none; }
+
+        .cart-icon-btn, .fav-icon-btn, .chat-icon-btn, .account-icon-btn {
+            position: relative; cursor: pointer; font-size: 1.1rem; color: var(--text-light);
+            background: rgba(255,255,255,0.05); width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; border: 1px solid var(--border);
+        }
+        .account-icon-btn { display: none; border-color: var(--primary); color: var(--primary); }
+
+        .badge-count {
+            position: absolute; top: -5px; right: -5px;
+            background: var(--accent); color: #000;
+            font-size: 0.7rem; font-weight: 900;
+            width: 17px; height: 17px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* Toast Notifications */
+        #toastContainer {
+            position: fixed; bottom: 80px; right: 20px;
+            z-index: 9999; display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .toast {
+            background: var(--card-bg);
+            color: var(--text-light);
+            border: 1px solid var(--primary);
+            padding: 12px 20px; border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            display: flex; align-items: center; gap: 10px;
+            font-size: 0.88rem; font-weight: 700;
+        }
+
+        /* Sidebar Drawer */
+        .sidebar-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px);
+            z-index: 2500; display: none;
+        }
+        .sidebar-overlay.active { display: block; }
+
+        .sidebar {
+            position: fixed; top: 0; right: -300px; width: 280px; height: 100%;
+            background: var(--sidebar-bg); z-index: 3000;
+            transition: 0.4s ease; display: flex; flex-direction: column;
+            border-left: 1px solid var(--border); overflow-y: auto;
+        }
+        .sidebar.active { right: 0; }
+
+        .sidebar-profile {
+            padding: 30px 20px 20px; display: flex; flex-direction: column;
+            align-items: center; text-align: center; border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+        .sidebar-profile .profile-img {
+            width: 75px; height: 75px; border-radius: 50%;
+            object-fit: cover; border: 3px solid var(--accent); margin-bottom: 10px;
+        }
+
+        .close-sidebar-btn { position: absolute; top: 15px; left: 15px; font-size: 1.2rem; color: var(--text-muted); cursor: pointer; }
+        .theme-toggle-btn { position: absolute; top: 15px; right: 15px; font-size: 1.1rem; color: var(--accent); cursor: pointer; }
+
+        .sidebar-menu { list-style: none; padding: 15px 0; }
+        .sidebar-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 22px; color: var(--text-light); text-decoration: none;
+            font-size: 0.92rem; font-weight: 700; cursor: pointer; transition: 0.2s;
+        }
+        .sidebar-item:hover { background: var(--sidebar-hover); color: var(--accent); }
+        .sidebar-item-content { display: flex; align-items: center; gap: 12px; }
+        .sidebar-category-header { padding: 8px 22px; font-size: 0.78rem; font-weight: 900; color: var(--accent); background: rgba(255,159,28,0.05); margin-top: 5px; }
+
+        /* Modals Common */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 4000; display: none; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background: var(--card-bg); border: 1px solid var(--border);
+            width: 100%; max-width: 480px; border-radius: 20px; padding: 25px; position: relative;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .close-modal-btn { position: absolute; top: 15px; left: 20px; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; }
+
+        .form-group { margin-bottom: 12px; }
+        .form-group label { font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 4px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 10px 14px; background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border); border-radius: 10px; color: var(--text-light); outline: none;
+            font-size: 0.9rem;
+        }
+        .form-group input[type="file"] { padding: 7px; cursor: pointer; }
+
+        .checkbox-label {
+            display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 700; color: var(--primary);
+        }
+        .checkbox-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+
+        .submit-btn {
+            width: 100%; padding: 12px; background: var(--accent); color: #000;
+            border: none; border-radius: 10px; font-weight: 900; cursor: pointer; margin-top: 10px;
+        }
+
+        .auth-switch-text {
+            text-align: center; font-size: 0.82rem; margin-top: 12px; color: var(--text-muted);
+        }
+        .auth-switch-text span {
+            color: var(--primary); font-weight: 800; cursor: pointer; text-decoration: underline;
+        }
+
+        /* Hero & Search */
+        .hero {
+            margin-top: 85px; padding: 35px 20px 20px;
+            background: linear-gradient(to bottom, rgba(11, 15, 18, 0.85), var(--bg-color));
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+        }
+        .hero h1 { font-size: 2rem; font-weight: 900; }
+        .hero h1 span { color: var(--accent); }
+        .hero p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 18px; }
+
+        .top-search-container { width: 100%; max-width: 580px; position: relative; }
+        .top-search-container input {
+            width: 100%; padding: 13px 45px 13px 20px;
+            background: rgba(20, 27, 34, 0.95); border: 2px solid var(--primary);
+            border-radius: 30px; color: var(--text-light); font-size: 0.95rem; outline: none;
+        }
+        .top-search-container i { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--primary); }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px; padding: 25px 5% 60px;
+        }
+
+        .product-card {
+            background: var(--card-bg); border-radius: 16px;
+            border: 1px solid var(--border); overflow: hidden;
+            display: flex; flex-direction: column; transition: 0.3s; position: relative;
+        }
+        .product-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+
+        .card-top-btns {
+            position: absolute; top: 10px; left: 10px; z-index: 10;
+            display: flex; gap: 6px;
+        }
+
+        .fav-card-btn, .delete-card-btn {
+            background: rgba(0,0,0,0.6); border: none; color: #fff;
+            width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: 0.3s;
+        }
+        .delete-card-btn:hover { background: var(--danger); }
+        .fav-card-btn.active { color: #ef4444; background: #fff; }
+
+        .badge {
+            position: absolute; top: 10px; right: 10px;
+            background: var(--accent); color: #000;
+            font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 8px; z-index: 10;
+        }
+
+        .img-container {
+            width: 100%; height: 180px; background: #070b0d;
+            display: flex; align-items: center; justify-content: center; padding: 10px;
+        }
+        .product-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+        .product-info { padding: 15px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; }
+        .category-tag { font-size: 0.75rem; color: var(--primary); font-weight: 700; }
+        .product-title { font-size: 1rem; margin: 4px 0; font-weight: 800; }
+
+        .product-price-row {
+            display: flex; align-items: center; justify-content: space-between;
+            margin: 6px 0; font-weight: 900;
+        }
+        .price-text { font-size: 1.15rem; color: var(--accent); }
+        .negotiable-badge {
+            background: rgba(16, 185, 129, 0.15); color: var(--negotiable-badge);
+            border: 1px solid var(--negotiable-badge); font-size: 0.68rem; padding: 2px 7px;
+            border-radius: 6px; font-weight: 800; display: flex; align-items: center; gap: 3px;
+        }
+
+        .product-desc {
+            font-size: 0.82rem; color: var(--text-muted); line-height: 1.4;
+            margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        .card-actions { display: flex; gap: 6px; align-items: center; }
+        .add-cart-btn {
+            flex-grow: 1; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border); color: var(--text-light);
+            padding: 8px 10px; border-radius: 8px; cursor: pointer;
+            font-weight: 700; font-size: 0.78rem; transition: 0.3s;
+        }
+        .add-cart-btn:hover { background: var(--primary); color: #000; }
+
+        /* Cart Drawer */
+        .cart-modal {
+            position: fixed; top: 0; left: -100%; width: 320px; height: 100%;
+            background: #10161d; box-shadow: 5px 0 25px rgba(0,0,0,0.8);
+            z-index: 5000; transition: 0.4s ease; padding: 20px;
+            display: flex; flex-direction: column;
+        }
+        .cart-modal.active { left: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        .close-cart { font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
+        .cart-items { flex-grow: 1; overflow-y: auto; margin: 20px 0; }
+
+        .checkout-btn {
+            width: 100%; padding: 12px; background: #25d366; color: #fff;
+            border: none; border-radius: 8px; font-weight: 800; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;
+        }
+
+        /* Floating Buttons & Nav */
+        .whatsapp-float {
+            position: fixed; bottom: 75px; left: 20px; background: #25d366;
+            color: white; width: 50px; height: 50px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 1000; text-decoration: none;
+        }
+
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: var(--sidebar-bg); border-top: 1px solid var(--border);
+            display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); text-decoration: none; font-size: 0.72rem; font-weight: 700; cursor: pointer; }
+        .nav-item i { font-size: 1.2rem; margin-bottom: 2px; }
+        .nav-item.active, .nav-item:hover { color: var(--accent); }
+
+        .developer-section {
+            background: linear-gradient(135deg, #120e1d 0%, #19142b 100%);
+            border-top: 1px solid rgba(168, 85, 247, 0.3);
+            padding: 30px 5%; text-align: center; margin-top: 30px;
+        }
+        .developer-badge { background: rgba(168, 85, 247, 0.15); color: var(--developer-color); border: 1px solid var(--developer-color); padding: 4px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 800; }
+        .developer-btn { background: #25d366; color: #fff; padding: 10px 22px; border-radius: 25px; text-decoration: none; font-weight: 800; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; }
+
+        footer { background: #06090c; padding: 20px 5% 40px; text-align: center; }
+        footer p { color: var(--text-muted); font-size: 0.85rem; margin-top: 6px; }
+    </style>
+</head>
+<body>
+
+    <div id="toastContainer"></div>
+
+    <!-- الشريط الإعلاني -->
+    <div class="announcement-bar">
+        <i class="fa-solid fa-bolt"></i>
+        <span>شحن لكل المحافظات + استشارات مجانية: 01111210854</span>
+    </div>
+
+    <!-- الهيدر الرئيسي -->
+    <header>
+        <div class="header-right">
+            <div class="menu-toggle-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            
+            <a href="#" class="logo-container">
+                <img src="img1.jpg" alt="Logo" class="logo-img" id="headerLogoImg">
+                <div class="logo-text">الجزار <span>أنيمال</span></div>
+            </a>
+        </div>
+
+        <div class="header-actions">
+            <!-- الشات الخاص -->
+            <div class="chat-icon-btn" onclick="openChatModal()" title="الشات الخاص">
+                <i class="fa-solid fa-comments"></i>
+            </div>
+
+            <!-- أيقونة حسابي -->
+            <div class="account-icon-btn" id="accountIconBtn" onclick="openAccountModal()" title="حسابي">
+                <i class="fa-solid fa-id-badge"></i>
+            </div>
+
+            <!-- تسجيل الدخول -->
+            <button class="user-auth-btn" id="authBtn" onclick="handleAuthBtnClick()">
+                <i class="fa-solid fa-user"></i> <span id="authBtnText">دخول</span>
+            </button>
+
+            <!-- إضافة منتج للأدمن -->
+            <button class="admin-panel-btn" id="headerAddBtn" onclick="openAdminModal()">
+                <i class="fa-solid fa-plus-circle"></i> <span>إضافة</span>
+            </button>
+
+            <div class="fav-icon-btn" onclick="filterFavorites()">
+                <i class="fa-solid fa-heart"></i>
+                <span class="badge-count" id="favCount">0</span>
+            </div>
+
+            <div class="cart-icon-btn" onclick="toggleCart()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="badge-count" id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <!-- القائمة الجانبية -->
+    <aside class="sidebar" id="sidebar">
+        <span class="close-sidebar-btn" onclick="toggleSidebar()">&times;</span>
+        <span class="theme-toggle-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></span>
+        
+        <div class="sidebar-profile">
+            <img src="img1.jpg" alt="Logo" class="profile-img" id="sidebarProfileImg">
+            <div style="font-size:1.1rem; font-weight:900;" id="sidebarUserName">زائر</div>
+            <div style="font-size:0.75rem; color:var(--primary);" id="sidebarUserEmail">يرجى تسجيل الدخول</div>
+        </div>
+
+        <ul class="sidebar-menu">
+            <a class="sidebar-item" id="sidebarAccountItem" onclick="openAccountModal(); toggleSidebar();" style="display:none;">
+                <div class="sidebar-item-content">
+                    <i class="fa-solid fa-user-gear" style="color:var(--primary);"></i>
+                    <span>إعدادات حسابي الشخصي</span>
+                </div>
+            </a>
+
+            <a class="sidebar-item" id="sidebarAddProductItem" onclick="openAdminModal(); toggleSidebar();" style="display:none;">
+                <div class="sidebar-item-content">
+                    <i class="fa-solid fa-plus-circle" style="color:var(--accent);"></i>
+                    <span>إضافة عنصر / منتج جديد</span>
+                </div>
+            </a>
+            
+            <a class="sidebar-item" onclick="openChatModal(); toggleSidebar();">
+                <div class="sidebar-item-content">
+                    <i class="fa-solid fa-comments" style="color:var(--primary);"></i>
+                    <span>الشات الخاص والتواصل</span>
+                </div>
+            </a>
+
+            <!-- قسم الأصناف والأقسام -->
+            <div class="sidebar-category-header">الأصناف والأقسام</div>
+            
+            <a class="sidebar-item" onclick="filterCategory('all'); toggleSidebar();">
+                <div class="sidebar-item-content"><i class="fa-solid fa-border-all" style="color:#eab308;"></i><span>عرض الكل</span></div>
+            </a>
+            <a class="sidebar-item" onclick="filterCategory('المفصلية'); toggleSidebar();">
+                <div class="sidebar-item-content"><i class="fa-solid fa-spider" style="color:#a855f7;"></i><span>المفصلية</span></div>
+            </a>
+            <a class="sidebar-item" onclick="filterCategory('الثعابين'); toggleSidebar();">
+                <div class="sidebar-item-content"><i class="fa-solid fa-staff-snake" style="color:#06b6d4;"></i><span>الثعابين</span></div>
+            </a>
+            <a class="sidebar-item" onclick="filterCategory('السحالي'); toggleSidebar();">
+                <div class="sidebar-item-content"><i class="fa-solid fa-dragon" style="color:#22c55e;"></i><span>السحالي</span></div>
+            </a>
+            <a class="sidebar-item" onclick="filterCategory('الحيوانات البريه'); toggleSidebar();">
+                <div class="sidebar-item-content"><i class="fa-solid fa-hippo" style="color:#f97316;"></i><span>الحيوانات البرية</span></div>
+            </a>
+            <a class="sidebar-item" onclick="filterCategory('التجهيزات'); toggleSidebar();">
+                <div class="sidebar-item-content"><i class="fa-solid fa-toolbox" style="color:#3b82f6;"></i><span>التجهيزات</span></div>
+            </a>
+            <a class="sidebar-item" onclick="filterCategory('الاكسسوارات'); toggleSidebar();">
+                <div class="sidebar-item-content"><i class="fa-solid fa-gem" style="color:#ec4899;"></i><span>الإكسسوارات</span></div>
+            </a>
+        </ul>
+    </aside>
+
+    <!-- Modal: Auth (Login / Register) -->
+    <div class="modal-overlay" id="authModalOverlay">
+        <div class="modal-box">
+            <span class="close-modal-btn" onclick="closeAuthModal()">&times;</span>
+            <h2 id="authTitle" style="color:var(--primary); margin-bottom:15px; font-size:1.2rem; text-align:center;">🔑 تسجيل الدخول</h2>
+            
+            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                <div class="form-group">
+                    <label>اسم المستخدم</label>
+                    <input type="text" id="authUsername" placeholder="اكتب اسم المستخدم..." required>
+                </div>
+
+                <div class="form-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" id="authPassword" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="submit-btn" id="authSubmitBtn">دخول</button>
+            </form>
+
+            <div class="auth-switch-text" id="authSwitchContainer">
+                ليس لديك حساب؟ <span onclick="toggleAuthMode()">إنشاء حساب جديد</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Account Settings -->
+    <div class="modal-overlay" id="accountModalOverlay">
+        <div class="modal-box">
+            <span class="close-modal-btn" onclick="closeAccountModal()">&times;</span>
+            <h2 style="color:var(--primary); margin-bottom:15px; font-size:1.2rem;">⚙️ إدارة حسابي الشخصي</h2>
+            <form id="accountForm" onsubmit="handleAccountUpdate(event)">
+                <div class="form-group">
+                    <label>تعديل اسم المستخدم</label>
+                    <input type="text" id="accUsername" required>
+                </div>
+
+                <div class="form-group">
+                    <label>كلمة المرور الجديدة</label>
+                    <input type="password" id="accPassword" placeholder="اكتب كلمة مرور جديدة أو اتركها فارغة">
+                </div>
+
+                <div class="form-group">
+                    <label>اختر صورة شخصية جديدة من المعرض</label>
+                    <input type="file" id="accImgFile" accept="image/*">
+                </div>
+
+                <button type="submit" class="submit-btn"><i class="fa-solid fa-floppy-disk"></i> حفظ التغييرات</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Admin Add Product -->
+    <div class="modal-overlay" id="adminModalOverlay">
+        <div class="modal-box">
+            <span class="close-modal-btn" onclick="closeAdminModal()">&times;</span>
+            <h2 style="color:var(--accent); margin-bottom:15px; font-size:1.2rem;">➕ إضافة منتج جديد</h2>
+            <form id="productForm" onsubmit="handleProductSubmit(event)">
+                <div class="form-group">
+                    <label>اسم الكائن / المنتج *</label>
+                    <input type="text" id="prodTitle" placeholder="مثال: حرباء محجبة" required>
+                </div>
+
+                <div class="form-group">
+                    <label style="color:var(--accent);">السعر (بالجنيه المصري) *</label>
+                    <input type="number" id="prodPrice" placeholder="مثال: 1500" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label>صورة المنتج (اختر من المعرض) *</label>
+                    <input type="file" id="prodImgFile" accept="image/*" required>
+                </div>
+
+                <div class="form-group" style="margin: 10px 0 15px;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="prodNegotiable">
+                        <span>قبول التفاوض / الفصال في السعر 🤝</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>الفئة / القسم</label>
+                    <select id="prodCategory">
+                        <option value="المفصلية">المفصلية</option>
+                        <option value="الثعابين">الثعابين</option>
+                        <option value="السحالي">السحالي</option>
+                        <option value="الحيوانات البريه">الحيوانات البرية</option>
+                        <option value="التجهيزات">التجهيزات</option>
+                        <option value="الاكسسوارات">الإكسسوارات</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>الوصف المختصر</label>
+                    <textarea id="prodDesc" rows="2" placeholder="وصف كامل عن صحة الكائن..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn"><i class="fa-solid fa-check"></i> نشر المنتج مباشرة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Private Chat -->
+    <div class="modal-overlay" id="chatModalOverlay">
+        <div class="modal-box">
+            <span class="close-modal-btn" onclick="closeChatModal()">&times;</span>
+            <h3 style="color:var(--primary); margin-bottom:10px; font-size:1.1rem;">💬 الشات الخاص والتواصل</h3>
+            
+            <div id="chatMessagesList" style="height: 250px; overflow-y: auto; margin-bottom: 10px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px;"></div>
+
+            <form onsubmit="handleSendPrivateMessage(event)">
+                <div class="form-group">
+                    <input type="text" id="chatInputText" placeholder="اكتب رسالتك..." required>
+                </div>
+                <button type="submit" class="submit-btn" style="background:var(--accent);">إرسال الرسالة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>معرض <span>الجزار أنيمال</span> للحيوانات والنوادر</h1>
+        <p>أقوى وأرقى السلالات والزواحف بأعلى مستويات الرعاية والتجهيز.</p>
+
+        <div class="top-search-container">
+            <input type="text" id="searchInput" placeholder="ابحث عن أي حيوان، زواحف أو مستلزمات..." onkeyup="handleSearchInput()">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-grid" id="productsGrid"></section>
+
+    <!-- Cart Drawer -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h3 style="color: var(--primary);">سلة الطلبات</h3>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <button class="checkout-btn" onclick="sendWhatsAppOrder()">
+                <i class="fa-brands fa-whatsapp"></i> إرسال الطلب عبر الواتساب
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Buttons -->
+    <a href="https://wa.me/201111210854" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active"><i class="fa-solid fa-house"></i><span>الرئيسية</span></a>
+        <a class="nav-item" onclick="toggleSidebar()"><i class="fa-solid fa-layer-group"></i><span>الأقسام</span></a>
+        <a class="nav-item" onclick="openChatModal()"><i class="fa-solid fa-comments"></i><span>شات</span></a>
+        <a class="nav-item" id="navAddBtn" onclick="openAdminModal()" style="display:none;"><i class="fa-solid fa-plus-circle"></i><span>إضافة</span></a>
+        <a class="nav-item" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i><span>السلة</span></a>
+    </nav>
+
+    <!-- Developer Section -->
+    <section class="developer-section">
+        <div>
+            <span class="developer-badge"><i class="fa-solid fa-code"></i> مطور الموقع</span>
+            <h3 style="color:#fff; margin-top:8px;">إنشاء موقع ويب بأرخص سعر</h3>
+            <p style="color:var(--text-muted); font-size:0.9rem;">تصميم وتطوير المتاجر والمواقع بواسطة المطور <strong>يوسف</strong></p>
+            <a href="https://wa.me/201006562153" target="_blank" class="developer-btn"><i class="fa-brands fa-whatsapp"></i> واتساب المطور</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>المكان الأول لاقتناء أفضل الحيوانات والنوادر ومستلزماتها.</p>
+        <p style="color: var(--primary); font-weight: bold; margin-top: 5px;">للتواصل والطلبات: 01111210854</p>
+        <p>&copy; 2026 Elgazzar Animals - جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        const MASTER_ADMIN_USERNAME = "elgazzar";
+        const MASTER_ADMIN_PASSWORD = "ALGAZAR admin01111210854";
+
+        let initialProducts = [
+            { id: 1, ownerId: 'elgazzar', title: 'سلحفاة سولكاتا الأفريقية', price: 3500, isNegotiable: true, img: 'img1.jpg', category: 'السحالي', desc: 'سلحفاة سولكاتا عملاقة أليفة وممتازة.' },
+            { id: 2, ownerId: 'elgazzar', title: 'ضب ملون فاخر', price: 2800, isNegotiable: false, img: 'img1.jpg', category: 'السحالي', desc: 'ضب ملون بألوان زاهية وجميلة جداً.' }
+        ];
+
+        let products = JSON.parse(localStorage.getItem('elgazzar_products')) || initialProducts;
+        let registeredUsers = JSON.parse(localStorage.getItem('elgazzar_registered_users')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('elgazzar_current_user')) || null;
+        let cart = JSON.parse(localStorage.getItem('elgazzar_cart')) || [];
+        let favorites = JSON.parse(localStorage.getItem('elgazzar_favs')) || [];
+        let chatMessages = JSON.parse(localStorage.getItem('elgazzar_private_chats')) || [{ author: 'المشرف', text: 'أهلاً بكم في شات المتجر!' }];
+        let currentFilterCategory = 'all';
+        let isRegisterMode = false;
+        let isShowingFavoritesOnly = false;
+
+        window.onload = function() {
+            updateUserUI();
+            renderProducts();
+            updateCartUI();
+            updateFavUI();
+            renderChatMessages();
+        };
+
+        function showToast(message) {
+            const container = document.getElementById('toastContainer');
+            if(!container) return;
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fa-solid fa-circle-info" style="color:var(--primary)"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 3000);
+        }
+
+        function isUserAuthorized() {
+            if (!currentUser) return false;
+            return currentUser.username === MASTER_ADMIN_USERNAME && currentUser.isAdmin === true;
+        }
+
+        function updateUserUI() {
+            const authorized = isUserAuthorized();
+            const accountIconBtn = document.getElementById('accountIconBtn');
+
+            if (currentUser) {
+                document.getElementById('authBtnText').innerText = "خروج";
+                document.getElementById('sidebarUserName').innerText = currentUser.username;
+                document.getElementById('sidebarUserEmail').innerText = authorized ? "المالك الأساسي (الأدمن) 👑" : "عضو مسجل";
+                
+                if (currentUser.img) {
+                    document.getElementById('sidebarProfileImg').src = currentUser.img;
+                    document.getElementById('headerLogoImg').src = currentUser.img;
+                } else {
+                    document.getElementById('sidebarProfileImg').src = 'img1.jpg';
+                    document.getElementById('headerLogoImg').src = 'img1.jpg';
+                }
+
+                if (accountIconBtn) accountIconBtn.style.display = 'flex';
+                document.getElementById('sidebarAccountItem').style.display = 'flex';
+
+                if (authorized) {
+                    document.getElementById('headerAddBtn').style.display = 'flex';
+                    document.getElementById('sidebarAddProductItem').style.display = 'flex';
+                    document.getElementById('navAddBtn').style.display = 'flex';
+                } else {
+                    document.getElementById('headerAddBtn').style.display = 'none';
+                    document.getElementById('sidebarAddProductItem').style.display = 'none';
+                    document.getElementById('navAddBtn').style.display = 'none';
+                }
+            } else {
+                document.getElementById('authBtnText').innerText = "دخول";
+                document.getElementById('sidebarUserName').innerText = "زائر";
+                document.getElementById('sidebarUserEmail').innerText = "يرجى تسجيل الدخول";
+                document.getElementById('sidebarProfileImg').src = 'img1.jpg';
+                document.getElementById('headerLogoImg').src = 'img1.jpg';
+                
+                if (accountIconBtn) accountIconBtn.style.display = 'none';
+                document.getElementById('sidebarAccountItem').style.display = 'none';
+                document.getElementById('headerAddBtn').style.display = 'none';
+                document.getElementById('sidebarAddProductItem').style.display = 'none';
+                document.getElementById('navAddBtn').style.display = 'none';
+            }
+        }
+
+        function handleAuthBtnClick() {
+            if (currentUser) {
+                currentUser = null;
+                localStorage.removeItem('elgazzar_current_user');
+                updateUserUI();
+                renderProducts();
+                showToast("تم تسجيل الخروج بنجاح 👋");
+            } else {
+                openAuthModal();
+            }
+        }
+
+        function openAuthModal() { 
+            isRegisterMode = false;
+            updateAuthModalView();
+            document.getElementById('authModalOverlay').classList.add('active'); 
+        }
+        function closeAuthModal() { document.getElementById('authModalOverlay').classList.remove('active'); }
+
+        function toggleAuthMode() {
+            isRegisterMode = !isRegisterMode;
+            updateAuthModalView();
+        }
+
+        function updateAuthModalView() {
+            const titleEl = document.getElementById('authTitle');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const switchContainer = document.getElementById('authSwitchContainer');
+
+            if (isRegisterMode) {
+                titleEl.innerText = "📝 إنشاء حساب جديد";
+                submitBtn.innerText = "تسجيل الحساب";
+                switchContainer.innerHTML = 'لديك حساب بالفعل؟ <span onclick="toggleAuthMode()">تسجيل الدخول</span>';
+            } else {
+                titleEl.innerText = "🔑 تسجيل الدخول";
+                submitBtn.innerText = "دخول";
+                switchContainer.innerHTML = 'ليس لديك حساب؟ <span onclick="toggleAuthMode()">إنشاء حساب جديد</span>';
+            }
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('authUsername').value.trim().toLowerCase();
+            const password = document.getElementById('authPassword').value;
+
+            if (isRegisterMode) {
+                if (username === MASTER_ADMIN_USERNAME) {
+                    showToast("اسم المستخدم هذا محجوز للمالك الأساسي ❌");
+                    return;
+                }
+                const existingUser = registeredUsers.find(u => u.username === username);
+                if (existingUser) {
+                    showToast("اسم المستخدم مستخدم بالفعل، اختر اسمًا آخر ⚠️");
+                    return;
+                }
+
+                const newUser = { username, password, img: 'img1.jpg', isAdmin: false };
+                registeredUsers.push(newUser);
+                localStorage.setItem('elgazzar_registered_users', JSON.stringify(registeredUsers));
+
+                currentUser = newUser;
+                localStorage.setItem('elgazzar_current_user', JSON.stringify(currentUser));
+
+                closeAuthModal();
+                updateUserUI();
+                renderProducts();
+                showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح 🎉");
+            } else {
+                if (username === MASTER_ADMIN_USERNAME && password === MASTER_ADMIN_PASSWORD) {
+                    currentUser = { username: MASTER_ADMIN_USERNAME, password: MASTER_ADMIN_PASSWORD, img: 'img1.jpg', isAdmin: true };
+                    localStorage.setItem('elgazzar_current_user', JSON.stringify(currentUser));
+                    closeAuthModal();
+                    updateUserUI();
+                    renderProducts();
+                    showToast("أهلاً بك يا صاحب الموقع (المالك الرئيسي) 👑");
+                } else {
+                    const foundUser = registeredUsers.find(u => u.username === username && u.password === password);
+                    if (foundUser) {
+                        currentUser = foundUser;
+                        localStorage.setItem('elgazzar_current_user', JSON.stringify(currentUser));
+                        closeAuthModal();
+                        updateUserUI();
+                        renderProducts();
+                        showToast("تم تسجيل الدخول بنجاح ✅");
+                    } else {
+                        showToast("اسم المستخدم أو كلمة المرور غير صحيحة ❌");
+                    }
+                }
+            }
+        }
+
+        function openAccountModal() {
+            if (!currentUser) return;
+            document.getElementById('accUsername').value = currentUser.username;
+            document.getElementById('accPassword').value = '';
+            document.getElementById('accImgFile').value = '';
+            document.getElementById('accountModalOverlay').classList.add('active');
+        }
+        function closeAccountModal() { document.getElementById('accountModalOverlay').classList.remove('active'); }
+
+        function handleAccountUpdate(e) {
+            e.preventDefault();
+            const newUsername = document.getElementById('accUsername').value.trim().toLowerCase();
+            const newPassword = document.getElementById('accPassword').value;
+            const fileInput = document.getElementById('accImgFile');
+
+            currentUser.username = newUsername;
+            if (newPassword) currentUser.password = newPassword;
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    currentUser.img = uploadEvent.target.result;
+                    finalizeAccountUpdate();
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                finalizeAccountUpdate();
+            }
+        }
+
+        function finalizeAccountUpdate() {
+            registeredUsers = registeredUsers.map(u => u.username === currentUser.username ? currentUser : u);
+            localStorage.setItem('elgazzar_registered_users', JSON.stringify(registeredUsers));
+            localStorage.setItem('elgazzar_current_user', JSON.stringify(currentUser));
+
+            closeAccountModal();
+            updateUserUI();
+            renderProducts();
+            showToast("تم تحديث بيانات الحساب بنجاح ✨");
+        }
+
+        function filterCategory(cat) {
+            currentFilterCategory = cat;
+            isShowingFavoritesOnly = false;
+            renderProducts();
+        }
+
+        function filterFavorites() {
+            isShowingFavoritesOnly = !isShowingFavoritesOnly;
+            renderProducts();
+            if(isShowingFavoritesOnly) {
+                showToast("عرض المنتجات المفضلة فقط ❤️");
+            }
+        }
+
+        function handleSearchInput() {
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const searchQuery = document.getElementById('searchInput') ? document.getElementById('searchInput').value.trim().toLowerCase() : '';
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            let listToRender = products;
+            if (isShowingFavoritesOnly) {
+                listToRender = products.filter(p => favorites.includes(p.id));
+            }
+
+            if (listToRender.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:var(--text-muted); padding:40px;">لا توجد منتجات مطابقة للبحث أو القسم المحدد 🔍</p>';
+                return;
+            }
+
+            listToRender.forEach(p => {
+                const isAuthorized = isUserAuthorized();
+                const isOwner = currentUser && (p.ownerId === currentUser.username && currentUser.isAdmin);
+
+                if (!isShowingFavoritesOnly) {
+                    if (currentFilterCategory !== 'all' && p.category !== currentFilterCategory) return;
+                }
+                if (searchQuery && !p.title.toLowerCase().includes(searchQuery) && !p.desc.toLowerCase().includes(searchQuery)) return;
+
+                const isFav = favorites.includes(p.id) ? 'active' : '';
+
+                grid.innerHTML += `
+                    <div class="product-card" data-id="${p.id}">
+                        <div class="card-top-btns">
+                            <button class="fav-card-btn ${isFav}" onclick="toggleFavorite(${p.id}, this)"><i class="fa-solid fa-heart"></i></button>
+                            
+                            ${isAuthorized || isOwner ? `
+                                <button class="delete-card-btn" onclick="deleteProduct(${p.id})" title="حذف المنتج"><i class="fa-solid fa-trash"></i></button>
+                            ` : ''}
+                        </div>
+                        
+                        <span class="badge">معتمد</span>
+                        
+                        <div class="img-container">
+                            <img src="${p.img}" alt="${p.title}">
+                        </div>
+                        
+                        <div class="product-info">
+                            <span class="category-tag">${p.category}</span>
+                            <h3 class="product-title">${p.title}</h3>
+                            
+                            <div class="product-price-row">
+                                <span class="price-text">${p.price} ج.م</span>
+                                ${p.isNegotiable ? `<span class="negotiable-badge"><i class="fa-solid fa-handshake"></i> قابل للتفاوض</span>` : ''}
+                            </div>
+
+                            <p class="product-desc">${p.desc}</p>
+                            
+                            <div class="card-actions">
+                                <button class="add-cart-btn" onclick="addToCart('${p.title.replace(/'/g, "\\'")}', '${p.img}', ${p.price})"><i class="fa-solid fa-cart-plus"></i> إضافة للسلة</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleFavorite(id, btn) {
+            const index = favorites.indexOf(id);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                btn.classList.remove('active');
+                showToast("تمت الإزالة من المفضلة");
+            } else {
+                favorites.push(id);
+                btn.classList.add('active');
+                showToast("تمت الإضافة إلى المفضلة ❤️");
+            }
+            localStorage.setItem('elgazzar_favs', JSON.stringify(favorites));
+            updateFavUI();
+        }
+
+        function updateFavUI() {
+            const countEl = document.getElementById('favCount');
+            if (countEl) countEl.innerText = favorites.length;
+        }
+
+        function openAdminModal() { 
+            if (!isUserAuthorized()) {
+                showToast("عذراً، إضافة منتج مخصصة للمالك الرئيسي فقط ⚠️");
+                return;
+            }
+            document.getElementById('prodTitle').value = '';
+            document.getElementById('prodPrice').value = '';
+            document.getElementById('prodImgFile').value = '';
+            document.getElementById('prodNegotiable').checked = false;
+            document.getElementById('prodDesc').value = '';
+            document.getElementById('adminModalOverlay').classList.add('active'); 
+        }
+        function closeAdminModal() { document.getElementById('adminModalOverlay').classList.remove('active'); }
+
+        function handleProductSubmit(e) {
+            e.preventDefault();
+            const title = document.getElementById('prodTitle').value.trim();
+            const price = Number(document.getElementById('prodPrice').value);
+            const isNegotiable = document.getElementById('prodNegotiable').checked;
+            const category = document.getElementById('prodCategory').value;
+            const desc = document.getElementById('prodDesc').value.trim();
+            const fileInput = document.getElementById('prodImgFile');
+
+            if (!fileInput.files || !fileInput.files[0]) {
+                showToast("يرجى اختيار صورة للمنتج من المعرض ⚠️");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(uploadEvent) {
+                const newProd = {
+                    id: Date.now(),
+                    ownerId: currentUser.username,
+                    title, 
+                    price, 
+                    isNegotiable, 
+                    img: uploadEvent.target.result, 
+                    category, 
+                    desc 
+                };
+
+                products.push(newProd);
+                localStorage.setItem('elgazzar_products', JSON.stringify(products));
+
+                closeAdminModal();
+                renderProducts();
+                showToast("تم نشر المنتج بنجاح مع صورة المعرض ✅");
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+
+        function deleteProduct(id) {
+            products = products.filter(item => item.id !== id);
+            localStorage.setItem('elgazzar_products', JSON.stringify(products));
+            renderProducts();
+            showToast("تم حذف المنتج بنجاح 🗑️");
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+        }
+
+        function toggleCart() { document.getElementById('cartModal').classList.toggle('active'); }
+        
+        function addToCart(title, img, price) {
+            cart.push({ title, img, price });
+            localStorage.setItem('elgazzar_cart', JSON.stringify(cart));
+            updateCartUI();
+            showToast("تمت إضافة المنتج إلى السلة 🛒");
+        }
+        
+        function updateCartUI() {
+            const countEl = document.getElementById('cartCount');
+            if (countEl) countEl.innerText = cart.length;
+            const container = document.getElementById('cartItems');
+            if (container) {
+                if (cart.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; color:var(--text-muted); margin-top:20px;">السلة فارغة حالياً</p>';
+                    return;
+                }
+                container.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:rgba(255,255,255,0.03); padding:8px; border-radius:8px; font-size:0.85rem;">
+                        <span>${item.title} (${item.price} ج.م)</span>
+                        <button onclick="removeFromCart(${index})" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:1rem;"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `).join('');
+            }
+        }
+
+       
