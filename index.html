@@ -87,6 +87,15 @@
         .add-cart-btn { width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text-light); padding: 7px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.75rem; }
         .add-cart-btn:hover { background: var(--primary); color: #000; }
 
+        /* صفحة معلومات الحيوانات */
+        .info-page-container { padding: 20px 5% 50px; max-width: 800px; margin: 0 auto; display: none; }
+        .info-page-container.active { display: block; }
+        .info-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center; position: relative; }
+        .info-img { width: 100px; height: 100px; border-radius: 10px; object-fit: cover; background: #000; border: 1px solid var(--border); flex-shrink: 0; }
+        .info-details { flex-grow: 1; }
+        .info-title { font-size: 1.1rem; font-weight: 900; color: var(--accent); margin-bottom: 5px; }
+        .info-text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
         .cart-modal { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: #10161d; z-index: 5000; transition: 0.4s ease; padding: 15px; display: flex; flex-direction: column; }
         .cart-modal.active { left: 0; }
         .cart-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
@@ -108,7 +117,7 @@
     <header>
         <div class="header-right">
             <div class="menu-toggle-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
-            <a href="index.html" class="logo-container">
+            <a href="#" onclick="showMainSection()" class="logo-container">
                 <img src="img1.jpg" alt="Logo" class="logo-img">
                 <div class="logo-text-box">
                     <div class="logo-main">Elgazzar <span>Animals</span></div>
@@ -133,15 +142,22 @@
         </div>
         <ul class="sidebar-menu">
             <a class="sidebar-item" id="sidebarAddProductItem" onclick="openAdminModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-plus-circle" style="color:var(--accent);"></i><span>إضافة منتج جديد</span></div></a>
-            <div class="sidebar-category-header">الأقسام</div>
-            <a class="sidebar-item" onclick="filterCategory('all'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-border-all"></i><span>عرض الكل</span></div></a>
-            <a class="sidebar-item" onclick="filterCategory('السحالي'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-dragon"></i><span>السحالي</span></div></a>
-            <a class="sidebar-item" onclick="filterCategory('الثعابين'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-staff-snake"></i><span>الثعابين</span></div></a>
-            <a class="sidebar-item" onclick="filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span></div></a>
-            <a class="sidebar-item" onclick="filterCategory('التجهيزات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-box-archive"></i><span>التجهيزات</span></div></a>
+            <a class="sidebar-item" id="sidebarAddInfoItem" onclick="openAnimalInfoModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-circle-info" style="color:var(--primary);"></i><span>إضافة معلومات حيوان</span></div></a>
+            <a class="sidebar-item" id="sidebarChangePassItem" onclick="openChangePassModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-key" style="color:var(--accent);"></i><span>تغيير كلمة المرور</span></div></a>
+            
+            <div class="sidebar-category-header">الأقسام الأساسية</div>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('all'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-border-all"></i><span>عرض الكل (المنتجات)</span></div></a>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('السحالي'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-dragon"></i><span>السحالي</span></div></a>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('الثعابين'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-staff-snake"></i><span>الثعابين</span></div></a>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span></div></a>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('التجهيزات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-box-archive"></i><span>التجهيزات</span></div></a>
+            
+            <div class="sidebar-category-header">معلومات وقواميس</div>
+            <a class="sidebar-item" onclick="showInfoSection(); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-book-open" style="color:var(--accent);"></i><span>معلومات الحيوانات</span></div></a>
         </ul>
     </aside>
 
+    <!-- موديل تسجيل دخول المالك -->
     <div class="modal-overlay" id="authModalOverlay">
         <div class="modal-box">
             <span class="close-modal-btn" onclick="closeAuthModal()">&times;</span>
@@ -154,6 +170,20 @@
         </div>
     </div>
 
+    <!-- موديل تغيير كلمة المرور للمالك فقط -->
+    <div class="modal-overlay" id="changePassModalOverlay">
+        <div class="modal-box">
+            <span class="close-modal-btn" onclick="closeChangePassModal()">&times;</span>
+            <h2 style="color:var(--accent); margin-bottom:12px; font-size:1.1rem;">🔒 تغيير كلمة المرور</h2>
+            <form onsubmit="handlePasswordChangeSubmit(event)">
+                <div class="form-group"><label>كلمة المرور الحالية</label><input type="password" id="currentPassInput" required></div>
+                <div class="form-group"><label>كلمة المرور الجديدة</label><input type="password" id="newPassInput" required></div>
+                <button type="submit" class="submit-btn">حفظ كلمة المرور الجديدة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- موديل إضافة منتج -->
     <div class="modal-overlay" id="adminModalOverlay">
         <div class="modal-box">
             <span class="close-modal-btn" onclick="closeAdminModal()">&times;</span>
@@ -172,24 +202,50 @@
                 </div>
                 <div class="form-group"><label>صورة المنتج</label><input type="file" id="prodImgFile" accept="image/*"></div>
                 <div class="form-group"><label>الوصف</label><textarea id="prodDesc" rows="2" required></textarea></div>
-                <button type="submit" class="submit-btn" id="submitProductBtn">نشر المنتج أونلاين</button>
+                <button type="submit" class="submit-btn">نشر المنتج أونلاين</button>
             </form>
         </div>
     </div>
 
-    <section class="hero">
-        <div class="brand-logo-banner">
-            <div class="brand-title-row">Elgazzar <span>Animals</span></div>
-            <div class="brand-divider"><i class="fa-solid fa-staff-snake"></i></div>
-            <div class="brand-subtitle">R E P T I L E S</div>
+    <!-- موديل إضافة معلومات حيوان جديدة (من المعرض مباشرة) -->
+    <div class="modal-overlay" id="animalInfoModalOverlay">
+        <div class="modal-box">
+            <span class="close-modal-btn" onclick="closeAnimalInfoModal()">&times;</span>
+            <h2 style="color:var(--primary); margin-bottom:12px; font-size:1.1rem;">📖 إضافة معلومات حيوان</h2>
+            <form onsubmit="handleAnimalInfoSubmit(event)">
+                <input type="hidden" id="editInfoId">
+                <div class="form-group"><label>اسم الحيوان</label><input type="text" id="infoTitle" required placeholder="مثال: حرباء بانثر"></div>
+                <div class="form-group"><label>اختر صورة من المعرض</label><input type="file" id="infoImgFile" accept="image/*" required></div>
+                <div class="form-group"><label>المعلومات والتفاصيل الشاملة</label><textarea id="infoContent" rows="4" required placeholder="اكتب هنا معلومات الغذاء، البيئة المناسبة، وطريقة التعامل..."></textarea></div>
+                <button type="submit" class="submit-btn">حفظ ونشر المعلومات</button>
+            </form>
         </div>
-        <div class="top-search-container">
-            <input type="text" id="searchInput" placeholder="ابحث..." onkeyup="renderProducts()">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
-    </section>
+    </div>
 
-    <section class="products-grid" id="productsGrid"></section>
+    <div id="mainContentSection">
+        <section class="hero">
+            <div class="brand-logo-banner">
+                <div class="brand-title-row">Elgazzar <span>Animals</span></div>
+                <div class="brand-divider"><i class="fa-solid fa-staff-snake"></i></div>
+                <div class="brand-subtitle">R E P T I L E S</div>
+            </div>
+            <div class="top-search-container">
+                <input type="text" id="searchInput" placeholder="ابحث في المنتجات..." onkeyup="renderProducts()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+        </section>
+        <section class="products-grid" id="productsGrid"></section>
+    </div>
+
+    <!-- قسم عرض معلومات الحيوانات للزوار -->
+    <div class="info-page-container" id="infoPageSection">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h2 style="color: var(--accent); font-size: 1.5rem;"><i class="fa-solid fa-book-open"></i> موسوعة معلومات الحيوانات</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">معلومات كاملة ومفصلة مدعومة بالصور المباشرة</p>
+            <button onclick="openAnimalInfoModal()" id="addNewInfoBtn" style="display:none; margin-top: 10px; background:var(--primary); border:none; padding:6px 14px; border-radius:6px; font-weight:800; cursor:pointer; font-size:0.8rem;"><i class="fa-solid fa-plus"></i> إضافة معلومة جديدة</button>
+        </div>
+        <div id="animalInfoListContainer"></div>
+    </div>
 
     <div class="cart-modal" id="cartModal">
         <div class="cart-header">
@@ -205,8 +261,9 @@
     <a href="https://wa.me/201111210854" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
 
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item active"><i class="fa-solid fa-house"></i><span>الرئيسية</span></a>
-        <a class="nav-item" id="navAddBtn" onclick="openAdminModal()" style="display:none;"><i class="fa-solid fa-plus-circle"></i><span>إضافة</span></a>
+        <a onclick="showMainSection()" class="nav-item active" id="navHome"><i class="fa-solid fa-house"></i><span>الرئيسية</span></a>
+        <a onclick="showInfoSection()" class="nav-item" id="navInfo"><i class="fa-solid fa-book-open"></i><span>المعلومات</span></a>
+        <a class="nav-item" id="navAddBtn" onclick="openAdminModal()" style="display:none;"><i class="fa-solid fa-plus-circle"></i><span>إضافة منتج</span></a>
         <a class="nav-item" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i><span>السلة</span></a>
     </nav>
 
@@ -218,6 +275,7 @@
         let currentAdminPassword = localStorage.getItem('elgazzar_admin_pass') || "ALGAZAR admin01111210854";
         
         let products = [];
+        let animalInfos = JSON.parse(localStorage.getItem('elgazzar_animal_infos')) || [];
         let currentUser = JSON.parse(localStorage.getItem('elgazzar_current_user')) || null;
         let cart = JSON.parse(localStorage.getItem('elgazzar_cart')) || [];
         let currentFilterCategory = 'all';
@@ -226,6 +284,7 @@
             updateUserUI();
             fetchProductsFromCloud();
             updateCartUI();
+            renderAnimalInfos();
         };
 
         function showToast(msg) {
@@ -248,7 +307,6 @@
                 renderProducts();
             } catch (err) {
                 console.log("خطأ في جلب البيانات", err);
-                showToast("تعذر الاتصال بقاعدة البيانات أونلاين");
             }
         }
 
@@ -284,6 +342,9 @@
                     document.getElementById('headerAddBtn').style.display = 'flex';
                     document.getElementById('navAddBtn').style.display = 'flex';
                     document.getElementById('sidebarAddProductItem').style.display = 'flex';
+                    document.getElementById('sidebarAddInfoItem').style.display = 'flex';
+                    document.getElementById('sidebarChangePassItem').style.display = 'flex';
+                    document.getElementById('addNewInfoBtn').style.display = 'inline-block';
                     ownerActionsList.forEach(el => el.style.display = 'flex');
                 }
             } else {
@@ -293,6 +354,9 @@
                 document.getElementById('headerAddBtn').style.display = 'none';
                 document.getElementById('navAddBtn').style.display = 'none';
                 document.getElementById('sidebarAddProductItem').style.display = 'none';
+                document.getElementById('sidebarAddInfoItem').style.display = 'none';
+                document.getElementById('sidebarChangePassItem').style.display = 'none';
+                document.getElementById('addNewInfoBtn').style.display = 'none';
                 ownerActionsList.forEach(el => el.style.display = 'none');
             }
         }
@@ -303,6 +367,7 @@
                 localStorage.removeItem('elgazzar_current_user');
                 updateUserUI();
                 renderProducts();
+                renderAnimalInfos();
                 showToast("تم تسجيل الخروج");
             } else {
                 document.getElementById('authModalOverlay').classList.add('active');
@@ -321,10 +386,56 @@
                 closeAuthModal();
                 updateUserUI();
                 renderProducts();
+                renderAnimalInfos();
                 showToast("أهلاً يا مالك الموقع 👑");
             } else {
                 showToast("خطأ في البيانات");
             }
+        }
+
+        function openChangePassModal() {
+            if(!isUserAuthorized()) return;
+            document.getElementById('currentPassInput').value = '';
+            document.getElementById('newPassInput').value = '';
+            document.getElementById('changePassModalOverlay').classList.add('active');
+        }
+
+        function closeChangePassModal() {
+            document.getElementById('changePassModalOverlay').classList.remove('active');
+        }
+
+        function handlePasswordChangeSubmit(e) {
+            e.preventDefault();
+            const currentInput = document.getElementById('currentPassInput').value;
+            const newInput = document.getElementById('newPassInput').value;
+
+            if (currentInput === currentAdminPassword) {
+                if (newInput.length < 4) {
+                    showToast("كلمة المرور الجديدة قصيرة جداً");
+                    return;
+                }
+                currentAdminPassword = newInput;
+                localStorage.setItem('elgazzar_admin_pass', currentAdminPassword);
+                closeChangePassModal();
+                showToast("تم تغيير كلمة المرور وحفظها بنجاح 🔒");
+            } else {
+                showToast("كلمة المرور الحالية غير صحيحة");
+            }
+        }
+
+        function showMainSection() {
+            document.getElementById('mainContentSection').style.display = 'block';
+            document.getElementById('infoPageSection').classList.remove('active');
+            document.getElementById('navHome').classList.add('active');
+            document.getElementById('navInfo').classList.remove('active');
+        }
+
+        function showInfoSection() {
+            document.getElementById('mainContentSection').style.display = 'none';
+            document.getElementById('infoPageSection').classList.add('active');
+            document.getElementById('navInfo').classList.add('active');
+            document.getElementById('navHome').classList.remove('active');
+            renderAnimalInfos();
         }
 
         function renderProducts() {
@@ -342,7 +453,6 @@
             }
 
             const auth = isUserAuthorized();
-
             list.forEach(p => {
                 grid.innerHTML += `
                     <div class="product-card">
@@ -362,6 +472,86 @@
                     </div>
                 `;
             });
+        }
+
+        function renderAnimalInfos() {
+            const container = document.getElementById('animalInfoListContainer');
+            if(!container) return;
+            container.innerHTML = '';
+
+            if(animalInfos.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">لا توجد معلومات مضافة حالياً.</p>';
+                return;
+            }
+
+            const auth = isUserAuthorized();
+            animalInfos.forEach((info, index) => {
+                container.innerHTML += `
+                    <div class="info-card">
+                        ${auth ? `<button onclick="deleteAnimalInfo(${index})" style="position:absolute; top:8px; left:8px; background:none; border:none; color:var(--danger); cursor:pointer;"><i class="fa-solid fa-trash"></i></button>` : ''}
+                        <img src="${info.img}" alt="${info.title}" class="info-img">
+                        <div class="info-details">
+                            <h3 class="info-title">${info.title}</h3>
+                            <p class="info-text">${info.content}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openAnimalInfoModal() {
+            if(!isUserAuthorized()) return;
+            document.getElementById('editInfoId').value = '';
+            document.getElementById('infoTitle').value = '';
+            document.getElementById('infoContent').value = '';
+            document.getElementById('infoImgFile').value = '';
+            document.getElementById('animalInfoModalOverlay').classList.add('active');
+        }
+
+        function closeAnimalInfoModal() {
+            document.getElementById('animalInfoModalOverlay').classList.remove('active');
+        }
+
+        function handleAnimalInfoSubmit(e) {
+            e.preventDefault();
+            const title = document.getElementById('infoTitle').value;
+            const content = document.getElementById('infoContent').value;
+            const fInput = document.getElementById('infoImgFile');
+
+            if (fInput.files && fInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const img = new Image();
+                    img.src = evt.target.result;
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const MAX_WIDTH = 400;
+                        const scaleSize = MAX_WIDTH / img.width;
+                        canvas.width = MAX_WIDTH;
+                        canvas.height = img.height * scaleSize;
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        
+                        const imgSrc = canvas.toDataURL('image/jpeg', 0.6);
+                        animalInfos.unshift({ title, content, img: imgSrc });
+                        localStorage.setItem('elgazzar_animal_infos', JSON.stringify(animalInfos));
+                        closeAnimalInfoModal();
+                        renderAnimalInfos();
+                        showToast("تم حفظ ونشر معلومات الحيوان بنجاح 📖");
+                    };
+                };
+                reader.readAsDataURL(fInput.files[0]);
+            }
+        }
+
+        function deleteAnimalInfo(index) {
+            if(!isUserAuthorized()) return;
+            if(confirm("هل تريد حذف هذه المعلومة؟")) {
+                animalInfos.splice(index, 1);
+                localStorage.setItem('elgazzar_animal_infos', JSON.stringify(animalInfos));
+                renderAnimalInfos();
+                showToast("تم الحذف بنجاح");
+            }
         }
 
         function addToCart(title, img, price) {
