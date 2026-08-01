@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/jpeg" href="img1.jpg">
-    <!-- ربط ملف الـ Manifest والـ Theme -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2ec4b6">
     <title>Elgazzar Animals - Reptiles</title>
@@ -30,8 +29,6 @@
         .logo-sub { font-size: 9px; font-weight: 800; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; direction: ltr; text-align: center; }
         
         .header-actions { display: flex; align-items: center; gap: 8px; }
-        .user-auth-btn, .admin-panel-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text-light); padding: 5px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; }
-        .admin-panel-btn { border-color: var(--accent); color: var(--accent); display: none; }
         .cart-icon-btn { position: relative; cursor: pointer; font-size: 1rem; color: var(--text-light); background: rgba(255,255,255,0.05); width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); }
         .badge-count { position: absolute; top: -4px; right: -4px; background: var(--accent); color: #000; font-size: 0.65rem; font-weight: 900; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         
@@ -60,19 +57,15 @@
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 9px 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; color: var(--text-light); outline: none; font-size: 0.85rem; }
         .submit-btn { width: 100%; padding: 10px; background: var(--accent); color: #000; border: none; border-radius: 8px; font-weight: 900; cursor: pointer; margin-top: 8px; }
 
-        .hero { margin-top: 85px; padding: 25px 15px 15px; text-align: center; }
-        .brand-logo-banner { display: inline-flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
-        .brand-title-row { font-size: 1.8rem; font-weight: 900; color: #fff; direction: ltr; display: flex; gap: 8px; align-items: center; }
-        .brand-title-row span { color: var(--accent); }
-        .brand-divider { width: 220px; height: 2px; background: var(--accent); margin: 6px 0; position: relative; display: flex; align-items: center; justify-content: center; }
-        .brand-divider i { background: var(--bg-color); padding: 0 8px; color: var(--accent); font-size: 0.9rem; }
-        .brand-subtitle { font-size: 0.75rem; font-weight: 800; color: var(--accent); letter-spacing: 4px; text-transform: uppercase; direction: ltr; }
+        .hero { margin-top: 85px; padding: 20px 15px 15px; text-align: center; }
+        
+        .brand-logo-banner-img { width: 100%; max-width: 480px; margin: 0 auto 10px; display: flex; justify-content: center; align-items: center; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); cursor: pointer; }
+        .brand-logo-banner-img img { width: 100%; height: auto; display: block; object-fit: contain; }
 
-        .top-search-container { width: 100%; max-width: 520px; position: relative; margin: 12px auto 0; }
+        .top-search-container { width: 100%; max-width: 520px; position: relative; margin: 15px auto 0; }
         .top-search-container input { width: 100%; padding: 11px 40px 11px 15px; background: rgba(20, 27, 34, 0.95); border: 2px solid var(--primary); border-radius: 25px; color: var(--text-light); font-size: 0.9rem; outline: none; }
         .top-search-container i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--primary); }
 
-        /* تنسيق زر التثبيت */
         .install-container { text-align: center; margin: 15px 0; }
         #installBtn { display: none; padding: 10px 20px; background: var(--primary); color: #000; border: none; border-radius: 20px; font-weight: 900; font-size: 0.85rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
@@ -83,13 +76,22 @@
         .edit-card-btn { color: var(--edit-color); }
         .delete-card-btn { color: var(--danger); }
         .badge { position: absolute; top: 8px; left: 8px; background: var(--accent); color: #000; font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 6px; z-index: 10; }
-        .img-container { width: 100%; height: 170px; background: #070b0d; display: flex; align-items: center; justify-content: center; padding: 8px; }
-        .product-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        
+        .img-container { width: 100%; height: 200px; background: #070b0d; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; cursor: pointer; }
+        .product-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+        .product-card img:hover { transform: scale(1.05); }
+
+        .image-zoom-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(8px); z-index: 6000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .image-zoom-modal.active { display: flex; }
+        .image-zoom-modal img { max-width: 90%; max-height: 90vh; object-fit: contain; border-radius: 10px; border: 2px solid var(--border); }
+        .close-zoom-btn { position: absolute; top: 20px; left: 25px; font-size: 2rem; color: #fff; cursor: pointer; background: rgba(0,0,0,0.5); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
         .product-info { padding: 12px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; }
         .category-tag { font-size: 0.72rem; color: var(--primary); font-weight: 700; }
         .product-title { font-size: 0.95rem; margin: 3px 0; font-weight: 800; }
         .product-price-row { display: flex; align-items: center; justify-content: space-between; margin: 4px 0; font-weight: 900; }
         .price-text { font-size: 1.1rem; color: var(--accent); }
+        .stock-text { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; }
         .product-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; }
         .add-cart-btn { width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text-light); padding: 7px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.75rem; }
         .add-cart-btn:hover { background: var(--primary); color: #000; }
@@ -110,6 +112,8 @@
         .checkout-btn { width: 100%; padding: 10px; background: #25d366; color: #fff; border: none; border-radius: 6px; font-weight: 800; cursor: pointer; }
 
         .whatsapp-float { position: fixed; bottom: 70px; left: 15px; background: #25d366; color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; z-index: 1000; text-decoration: none; }
+        .music-float-btn { position: fixed; bottom: 125px; left: 15px; background: var(--card-bg); color: var(--accent); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; z-index: 1000; cursor: pointer; border: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--sidebar-bg); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 6px 0; z-index: 1000; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); text-decoration: none; font-size: 0.7rem; font-weight: 700; cursor: pointer; }
         .nav-item i { font-size: 1.1rem; margin-bottom: 2px; }
@@ -117,6 +121,14 @@
     </style>
 </head>
 <body>
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-float-btn" onclick="toggleMusic()">
+        <i class="fa-solid fa-volume-xmark" id="musicIcon"></i>
+    </div>
+
     <div id="toastContainer"></div>
     <div class="announcement-bar"><i class="fa-solid fa-bolt"></i><span>شحن لكل المحافظات + استشارات مجانية: 01111210854</span></div>
     
@@ -132,11 +144,14 @@
             </a>
         </div>
         <div class="header-actions">
-            <button class="user-auth-btn" id="authBtn" onclick="handleAuthBtnClick()"><i class="fa-solid fa-user"></i> <span id="authBtnText">دخول</span></button>
-            <button class="admin-panel-btn" id="headerAddBtn" onclick="openAdminModal()"><i class="fa-solid fa-plus-circle"></i> <span>إضافة</span></button>
             <div class="cart-icon-btn" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i><span class="badge-count" id="cartCount">0</span></div>
         </div>
     </header>
+
+    <div class="image-zoom-modal" id="imageZoomModal" onclick="closeZoomModal()">
+        <span class="close-zoom-btn">&times;</span>
+        <img id="zoomedImg" src="" alt="Zoomed Image">
+    </div>
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <aside class="sidebar" id="sidebar">
@@ -147,7 +162,10 @@
             <div style="font-size:0.7rem; color:var(--primary);" id="sidebarUserEmail">تسجيل الدخول مطلوب</div>
         </div>
         <ul class="sidebar-menu">
+            <!-- أزرار الإدارة ودخول الحساب داخل الشريط الجانبي -->
+            <a class="sidebar-item" id="sidebarAuthItem" onclick="handleAuthBtnClick()"><div class="sidebar-item-content"><i class="fa-solid fa-user" style="color:var(--primary);"></i><span id="sidebarAuthText">دخول</span></div></a>
             <a class="sidebar-item" id="sidebarAddProductItem" onclick="openAdminModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-plus-circle" style="color:var(--accent);"></i><span>إضافة منتج جديد</span></div></a>
+            
             <a class="sidebar-item" id="sidebarAddInfoItem" onclick="openAnimalInfoModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-circle-info" style="color:var(--primary);"></i><span>إضافة معلومات حيوان</span></div></a>
             <a class="sidebar-item" id="sidebarChangePassItem" onclick="openChangePassModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-key" style="color:var(--accent);"></i><span>تغيير كلمة المرور</span></div></a>
             
@@ -163,7 +181,6 @@
         </ul>
     </aside>
 
-    <!-- موديل تسجيل دخول المالك -->
     <div class="modal-overlay" id="authModalOverlay">
         <div class="modal-box">
             <span class="close-modal-btn" onclick="closeAuthModal()">&times;</span>
@@ -176,7 +193,6 @@
         </div>
     </div>
 
-    <!-- موديل تغيير كلمة المرور للمالك فقط -->
     <div class="modal-overlay" id="changePassModalOverlay">
         <div class="modal-box">
             <span class="close-modal-btn" onclick="closeChangePassModal()">&times;</span>
@@ -189,7 +205,7 @@
         </div>
     </div>
 
-    <!-- موديل إضافة منتج -->
+    <!-- موديل إضافة منتج (مع إضافة خانة العدد) -->
     <div class="modal-overlay" id="adminModalOverlay">
         <div class="modal-box">
             <span class="close-modal-btn" onclick="closeAdminModal()">&times;</span>
@@ -198,6 +214,7 @@
                 <input type="hidden" id="editProductId">
                 <div class="form-group"><label>اسم المنتج</label><input type="text" id="prodTitle" required></div>
                 <div class="form-group"><label>السعر</label><input type="number" id="prodPrice" required></div>
+                <div class="form-group"><label>العدد / الكمية المتاحة</label><input type="number" id="prodStock" value="1" required min="0"></div>
                 <div class="form-group"><label>القسم</label>
                     <select id="prodCategory">
                         <option value="السحالي">السحالي</option>
@@ -213,7 +230,6 @@
         </div>
     </div>
 
-    <!-- موديل إضافة معلومات حيوان جديدة -->
     <div class="modal-overlay" id="animalInfoModalOverlay">
         <div class="modal-box">
             <span class="close-modal-btn" onclick="closeAnimalInfoModal()">&times;</span>
@@ -230,13 +246,10 @@
 
     <div id="mainContentSection">
         <section class="hero">
-            <div class="brand-logo-banner">
-                <div class="brand-title-row">Elgazzar <span>Animals</span></div>
-                <div class="brand-divider"><i class="fa-solid fa-staff-snake"></i></div>
-                <div class="brand-subtitle">R E P T I L E S</div>
+            <div class="brand-logo-banner-img" onclick="openZoomModal('img2.jpg')">
+                <img src="img2.jpg" alt="Elgazzar Animals Logo">
             </div>
             
-            <!-- زر تثبيت التطبيق يظهر هنا تحت الهيدر أو البانر -->
             <div class="install-container">
                 <button id="installBtn"><i class="fa-solid fa-download"></i> تثبيت التطبيق على جهازك 📱</button>
             </div>
@@ -249,7 +262,6 @@
         <section class="products-grid" id="productsGrid"></section>
     </div>
 
-    <!-- قسم عرض معلومات الحيوانات للزوار -->
     <div class="info-page-container" id="infoPageSection">
         <div style="text-align: center; margin-bottom: 20px;">
             <h2 style="color: var(--accent); font-size: 1.5rem;"><i class="fa-solid fa-book-open"></i> موسوعة معلومات الحيوانات</h2>
@@ -280,7 +292,6 @@
     </nav>
 
     <script>
-        // تسجيل الـ Service Worker ليعمل التطبيق كـ PWA
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
                 .then(() => console.log('Service Worker Registered Successfully'));
@@ -297,6 +308,25 @@
         let currentUser = JSON.parse(localStorage.getItem('elgazzar_current_user')) || null;
         let cart = JSON.parse(localStorage.getItem('elgazzar_cart')) || [];
         let currentFilterCategory = 'all';
+
+        const music = document.getElementById('bgMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        let isMusicPlaying = false;
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                music.pause();
+                musicIcon.className = "fa-solid fa-volume-xmark";
+                isMusicPlaying = false;
+            } else {
+                music.play().then(() => {
+                    musicIcon.className = "fa-solid fa-volume-high";
+                    isMusicPlaying = true;
+                }).catch(e => {
+                    console.log("التشغيل التلقائي يتطلب تفاعل المستخدم:", e);
+                });
+            }
+        }
 
         window.onload = function() {
             updateUserUI();
@@ -353,11 +383,10 @@
             const ownerActionsList = document.querySelectorAll('.owner-actions');
             
             if (currentUser) {
-                document.getElementById('authBtnText').innerText = "خروج";
+                document.getElementById('sidebarAuthText').innerText = "خروج";
                 document.getElementById('sidebarUserName').innerText = currentUser.username;
                 document.getElementById('sidebarUserEmail').innerText = auth ? "المالك 👑" : "عضو";
                 if(auth) {
-                    document.getElementById('headerAddBtn').style.display = 'flex';
                     document.getElementById('navAddBtn').style.display = 'flex';
                     document.getElementById('sidebarAddProductItem').style.display = 'flex';
                     document.getElementById('sidebarAddInfoItem').style.display = 'flex';
@@ -366,10 +395,9 @@
                     ownerActionsList.forEach(el => el.style.display = 'flex');
                 }
             } else {
-                document.getElementById('authBtnText').innerText = "دخول";
+                document.getElementById('sidebarAuthText').innerText = "دخول";
                 document.getElementById('sidebarUserName').innerText = "زائر";
                 document.getElementById('sidebarUserEmail').innerText = "تسجيل الدخول مطلوب";
-                document.getElementById('headerAddBtn').style.display = 'none';
                 document.getElementById('navAddBtn').style.display = 'none';
                 document.getElementById('sidebarAddProductItem').style.display = 'none';
                 document.getElementById('sidebarAddInfoItem').style.display = 'none';
@@ -387,7 +415,9 @@
                 renderProducts();
                 renderAnimalInfos();
                 showToast("تم تسجيل الخروج");
+                toggleSidebar();
             } else {
+                toggleSidebar();
                 document.getElementById('authModalOverlay').classList.add('active');
             }
         }
@@ -472,6 +502,7 @@
 
             const auth = isUserAuthorized();
             list.forEach(p => {
+                const stockVal = p.stock !== undefined ? p.stock : 1;
                 grid.innerHTML += `
                     <div class="product-card">
                         <div class="owner-actions" style="display: ${auth ? 'flex' : 'none'};">
@@ -479,17 +510,31 @@
                             <button class="owner-btn delete-card-btn" onclick="deleteProduct(${p.id})"><i class="fa-solid fa-trash"></i></button>
                         </div>
                         <span class="badge">معتمد</span>
-                        <div class="img-container"><img src="${p.img}" alt="${p.title}"></div>
+                        <div class="img-container" onclick="openZoomModal('${p.img}')"><img src="${p.img}" alt="${p.title}"></div>
                         <div class="product-info">
                             <span class="category-tag">${p.category}</span>
                             <h3 class="product-title">${p.title}</h3>
-                            <div class="product-price-row"><span class="price-text">${p.price} ج.م</span></div>
+                            <div class="product-price-row">
+                                <span class="price-text">${p.price} ج.م</span>
+                                <span class="stock-text">العدد: ${stockVal}</span>
+                            </div>
                             <p class="product-desc">${p.desc}</p>
                             <button class="add-cart-btn" onclick="addToCart('${p.title}', '${p.img}', ${p.price})"><i class="fa-solid fa-cart-plus"></i> إضافة للسلة</button>
                         </div>
                     </div>
                 `;
             });
+        }
+
+        function openZoomModal(imgSrc) {
+            const modal = document.getElementById('imageZoomModal');
+            const zoomedImg = document.getElementById('zoomedImg');
+            zoomedImg.src = imgSrc;
+            modal.classList.add('active');
+        }
+
+        function closeZoomModal() {
+            document.getElementById('imageZoomModal').classList.remove('active');
         }
 
         function renderAnimalInfos() {
@@ -606,6 +651,7 @@
             document.getElementById('editProductId').value = '';
             document.getElementById('prodTitle').value = '';
             document.getElementById('prodPrice').value = '';
+            document.getElementById('prodStock').value = 1;
             document.getElementById('prodDesc').value = '';
             document.getElementById('prodImgFile').required = true;
             document.getElementById('modalFormTitle').innerText = "➕ إضافة منتج";
@@ -619,6 +665,7 @@
             document.getElementById('editProductId').value = p.id;
             document.getElementById('prodTitle').value = p.title;
             document.getElementById('prodPrice').value = p.price;
+            document.getElementById('prodStock').value = p.stock !== undefined ? p.stock : 1;
             document.getElementById('prodCategory').value = p.category;
             document.getElementById('prodDesc').value = p.desc;
             document.getElementById('prodImgFile').required = false;
@@ -642,6 +689,7 @@
             const editId = document.getElementById('editProductId').value;
             const title = document.getElementById('prodTitle').value;
             const price = Number(document.getElementById('prodPrice').value);
+            const stock = Number(document.getElementById('prodStock').value);
             const category = document.getElementById('prodCategory').value;
             const desc = document.getElementById('prodDesc').value;
             const fInput = document.getElementById('prodImgFile');
@@ -650,11 +698,11 @@
                 if (editId) {
                     const p = products.find(item => item.id == editId);
                     if (p) {
-                        p.title = title; p.price = price; p.category = category; p.desc = desc;
+                        p.title = title; p.price = price; p.stock = stock; p.category = category; p.desc = desc;
                         if(imgSrc) p.img = imgSrc;
                     }
                 } else {
-                    const newProd = { id: Date.now(), title, price, img: imgSrc || 'img1.jpg', category, desc };
+                    const newProd = { id: Date.now(), title, price, stock, img: imgSrc || 'img1.jpg', category, desc };
                     products.unshift(newProd);
                 }
                 saveProductsToCloud();
@@ -691,7 +739,6 @@
             window.open(`https://wa.me/201111210854?text=${msg}`, '_blank');
         }
 
-        // --- كود تثبيت التطبيق (PWA Install Prompt) ---
         let deferredPrompt;
         const installBtn = document.getElementById('installBtn');
 
