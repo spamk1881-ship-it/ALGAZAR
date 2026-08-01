@@ -11,7 +11,7 @@
         :root {
             --bg-color: #0b0f12; --card-bg: #141b22; --primary: #2ec4b6; --accent: #ff9f1c;
             --text-light: #f1f5f9; --text-muted: #94a3b8; --border: rgba(255, 255, 255, 0.08);
-            --sidebar-bg: #0d131a; --sidebar-hover: #182330; --danger: #ef4444; --negotiable-badge: #10b981;
+            --sidebar-bg: #0d131a; --sidebar-hover: #182330; --danger: #ef4444; --edit-color: #3b82f6;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-light); overflow-x: hidden; padding-bottom: 70px; }
@@ -26,8 +26,7 @@
         .header-actions { display: flex; align-items: center; gap: 10px; }
         .user-auth-btn, .admin-panel-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text-light); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
         .admin-panel-btn { border-color: var(--accent); color: var(--accent); display: none; }
-        .cart-icon-btn, .fav-icon-btn, .chat-icon-btn, .account-icon-btn { position: relative; cursor: pointer; font-size: 1.1rem; color: var(--text-light); background: rgba(255,255,255,0.05); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); }
-        .account-icon-btn { display: none; border-color: var(--primary); color: var(--primary); }
+        .cart-icon-btn, .fav-icon-btn { position: relative; cursor: pointer; font-size: 1.1rem; color: var(--text-light); background: rgba(255,255,255,0.05); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); }
         .badge-count { position: absolute; top: -5px; right: -5px; background: var(--accent); color: #000; font-size: 0.7rem; font-weight: 900; width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         #toastContainer { position: fixed; bottom: 80px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
         .toast { background: var(--card-bg); color: var(--text-light); border: 1px solid var(--primary); padding: 12px 20px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 10px; font-size: 0.88rem; font-weight: 700; }
@@ -60,9 +59,13 @@
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 25px 5% 60px; }
         .product-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; position: relative; }
         .card-top-btns { position: absolute; top: 10px; left: 10px; z-index: 10; display: flex; gap: 6px; }
-        .fav-card-btn, .delete-card-btn { background: rgba(0,0,0,0.6); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .fav-card-btn { background: rgba(0,0,0,0.6); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .fav-card-btn.active { color: #ef4444; background: #fff; }
-        .delete-card-btn:hover { background: var(--danger); }
+        .owner-actions { position: absolute; top: 10px; right: 45px; z-index: 10; display: flex; gap: 6px; display: none; }
+        .owner-btn { background: rgba(0,0,0,0.7); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+        .edit-card-btn { color: var(--edit-color); }
+        .delete-card-btn { color: var(--danger); }
+        .owner-btn:hover { background: #fff; }
         .badge { position: absolute; top: 10px; right: 10px; background: var(--accent); color: #000; font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 8px; z-index: 10; }
         .img-container { width: 100%; height: 180px; background: #070b0d; display: flex; align-items: center; justify-content: center; padding: 10px; }
         .product-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
@@ -99,8 +102,6 @@
             </a>
         </div>
         <div class="header-actions">
-            <div class="chat-icon-btn" onclick="openChatModal()"><i class="fa-solid fa-comments"></i></div>
-            <div class="account-icon-btn" id="accountIconBtn" onclick="openAccountModal()"><i class="fa-solid fa-id-badge"></i></div>
             <button class="user-auth-btn" id="authBtn" onclick="handleAuthBtnClick()"><i class="fa-solid fa-user"></i> <span id="authBtnText">دخول</span></button>
             <button class="admin-panel-btn" id="headerAddBtn" onclick="openAdminModal()"><i class="fa-solid fa-plus-circle"></i> <span>إضافة</span></button>
             <div class="fav-icon-btn" onclick="filterFavorites()"><i class="fa-solid fa-heart"></i><span class="badge-count" id="favCount">0</span></div>
@@ -117,12 +118,16 @@
             <div style="font-size:0.75rem; color:var(--primary);" id="sidebarUserEmail">يرجى تسجيل الدخول</div>
         </div>
         <ul class="sidebar-menu">
-            <a class="sidebar-item" id="sidebarAccountItem" onclick="openAccountModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-user-gear" style="color:var(--primary);"></i><span>إعدادات حسابي</span></div></a>
             <a class="sidebar-item" id="sidebarAddProductItem" onclick="openAdminModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-plus-circle" style="color:var(--accent);"></i><span>إضافة منتج جديد</span></div></a>
+            <a class="sidebar-item" id="sidebarChangePassItem" onclick="openPasswordModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-key" style="color:var(--primary);"></i><span>تغيير كلمة المرور</span></div></a>
             <div class="sidebar-category-header">الأقسام</div>
             <a class="sidebar-item" onclick="filterCategory('all'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-border-all"></i><span>عرض الكل</span></div></a>
             <a class="sidebar-item" onclick="filterCategory('السحالي'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-dragon"></i><span>السحالي</span></div></a>
             <a class="sidebar-item" onclick="filterCategory('الثعابين'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-staff-snake"></i><span>الثعابين</span></div></a>
+            <a class="sidebar-item" onclick="filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span></div></a>
+            <a class="sidebar-item" onclick="filterCategory('الحيوانات البريه'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-paw"></i><span>الحيوانات البريه</span></div></a>
+            <a class="sidebar-item" onclick="filterCategory('التجهيزات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-box-archive"></i><span>التجهيزات</span></div></a>
+            <a class="sidebar-item" onclick="filterCategory('الاكسسوارات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-puzzle-piece"></i><span>الاكسسوارات</span></div></a>
         </ul>
     </aside>
 
@@ -138,28 +143,41 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="adminModalOverlay">
+    <!-- نافذة تغيير كلمة المرور -->
+    <div class="modal-overlay" id="passwordModalOverlay">
         <div class="modal-box">
-            <span class="close-modal-btn" onclick="closeAdminModal()">&times;</span>
-            <h2 style="color:var(--accent); margin-bottom:15px; font-size:1.2rem;">➕ إضافة منتج</h2>
-            <form onsubmit="handleProductSubmit(event)">
-                <div class="form-group"><label>اسم المنتج</label><input type="text" id="prodTitle" required></div>
-                <div class="form-group"><label>السعر</label><input type="number" id="prodPrice" required></div>
-                <div class="form-group"><label>صورة المنتج</label><input type="file" id="prodImgFile" accept="image/*" required></div>
-                <div class="form-group"><label>الوصف</label><textarea id="prodDesc" rows="2" required></textarea></div>
-                <button type="submit" class="submit-btn">نشر المنتج</button>
+            <span class="close-modal-btn" onclick="closePasswordModal()">&times;</span>
+            <h2 style="color:var(--primary); margin-bottom:15px; font-size:1.2rem;">🔒 تغيير كلمة المرور</h2>
+            <form onsubmit="handlePasswordChange(event)">
+                <div class="form-group"><label>كلمة المرور الحالية</label><input type="password" id="oldPassword" required></div>
+                <div class="form-group"><label>كلمة المرور الجديدة</label><input type="password" id="newPassword" required></div>
+                <button type="submit" class="submit-btn">حفظ كلمة المرور الجديدة</button>
             </form>
         </div>
     </div>
 
-    <div class="modal-overlay" id="chatModalOverlay">
+    <!-- نافذة إضافة أو تعديل منتج -->
+    <div class="modal-overlay" id="adminModalOverlay">
         <div class="modal-box">
-            <span class="close-modal-btn" onclick="closeChatModal()">&times;</span>
-            <h3 style="color:var(--primary); margin-bottom:10px;">💬 الشات</h3>
-            <div id="chatMessagesList" style="height: 150px; overflow-y: auto; margin-bottom: 10px; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px;"></div>
-            <form onsubmit="handleSendPrivateMessage(event)">
-                <div class="form-group"><input type="text" id="chatInputText" placeholder="رسالتك..." required></div>
-                <button type="submit" class="submit-btn">إرسال</button>
+            <span class="close-modal-btn" onclick="closeAdminModal()">&times;</span>
+            <h2 id="modalFormTitle" style="color:var(--accent); margin-bottom:15px; font-size:1.2rem;">➕ إضافة منتج</h2>
+            <form onsubmit="handleProductSubmit(event)">
+                <input type="hidden" id="editProductId">
+                <div class="form-group"><label>اسم المنتج</label><input type="text" id="prodTitle" required></div>
+                <div class="form-group"><label>السعر</label><input type="number" id="prodPrice" required></div>
+                <div class="form-group"><label>القسم</label>
+                    <select id="prodCategory">
+                        <option value="السحالي">السحالي</option>
+                        <option value="الثعابين">الثعابين</option>
+                        <option value="المفصلية">المفصلية</option>
+                        <option value="الحيوانات البريه">الحيوانات البريه</option>
+                        <option value="التجهيزات">التجهيزات</option>
+                        <option value="الاكسسوارات">الاكسسوارات</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>صورة المنتج (اتركها فارغة عند التعديل لتبقي القديمة)</label><input type="file" id="prodImgFile" accept="image/*"></div>
+                <div class="form-group"><label>الوصف</label><textarea id="prodDesc" rows="2" required></textarea></div>
+                <button type="submit" class="submit-btn" id="submitProductBtn">نشر المنتج</button>
             </form>
         </div>
     </div>
@@ -190,23 +208,18 @@
     <nav class="bottom-nav">
         <a href="#" class="nav-item active"><i class="fa-solid fa-house"></i><span>الرئيسية</span></a>
         <a class="nav-item" onclick="toggleSidebar()"><i class="fa-solid fa-layer-group"></i><span>الأقسام</span></a>
-        <a class="nav-item" onclick="openChatModal()"><i class="fa-solid fa-comments"></i><span>شات</span></a>
         <a class="nav-item" id="navAddBtn" onclick="openAdminModal()" style="display:none;"><i class="fa-solid fa-plus-circle"></i><span>إضافة</span></a>
         <a class="nav-item" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i><span>السلة</span></a>
     </nav>
 
     <script>
         const MASTER_ADMIN_USERNAME = "elgazzar";
-        const MASTER_ADMIN_PASSWORD = "ALGAZAR admin01111210854";
-        let defaultProducts = [
-            { id: 1, ownerId: 'elgazzar', title: 'سلحفاة سولكاتا', price: 3500, isNegotiable: true, img: 'img1.jpg', category: 'السحالي', desc: 'سلحفاة أليفة وممتازة.' }
-        ];
-        let products = JSON.parse(localStorage.getItem('elgazzar_products')) || defaultProducts;
-        let registeredUsers = JSON.parse(localStorage.getItem('elgazzar_registered_users')) || [];
+        let currentAdminPassword = localStorage.getItem('elgazzar_admin_pass') || "ALGAZAR admin01111210854";
+        
+        let products = JSON.parse(localStorage.getItem('elgazzar_products')) || [];
         let currentUser = JSON.parse(localStorage.getItem('elgazzar_current_user')) || null;
         let cart = JSON.parse(localStorage.getItem('elgazzar_cart')) || [];
         let favorites = JSON.parse(localStorage.getItem('elgazzar_favs')) || [];
-        let chatMessages = JSON.parse(localStorage.getItem('elgazzar_private_chats')) || [{ author: 'المشرف', text: 'أهلاً بكم!' }];
         let currentFilterCategory = 'all';
 
         window.onload = function() {
@@ -214,7 +227,6 @@
             renderProducts();
             updateCartUI();
             updateFavUI();
-            renderChatMessages();
         };
 
         function showToast(msg) {
@@ -233,6 +245,8 @@
 
         function updateUserUI() {
             const auth = isUserAuthorized();
+            const ownerActionsList = document.querySelectorAll('.owner-actions');
+            
             if (currentUser) {
                 document.getElementById('authBtnText').innerText = "خروج";
                 document.getElementById('sidebarUserName').innerText = currentUser.username;
@@ -241,6 +255,8 @@
                     document.getElementById('headerAddBtn').style.display = 'flex';
                     document.getElementById('navAddBtn').style.display = 'flex';
                     document.getElementById('sidebarAddProductItem').style.display = 'flex';
+                    document.getElementById('sidebarChangePassItem').style.display = 'flex';
+                    ownerActionsList.forEach(el => el.style.display = 'flex');
                 }
             } else {
                 document.getElementById('authBtnText').innerText = "دخول";
@@ -249,6 +265,8 @@
                 document.getElementById('headerAddBtn').style.display = 'none';
                 document.getElementById('navAddBtn').style.display = 'none';
                 document.getElementById('sidebarAddProductItem').style.display = 'none';
+                document.getElementById('sidebarChangePassItem').style.display = 'none';
+                ownerActionsList.forEach(el => el.style.display = 'none');
             }
         }
 
@@ -267,11 +285,31 @@
         function openAuthModal() { document.getElementById('authModalOverlay').classList.add('active'); }
         function closeAuthModal() { document.getElementById('authModalOverlay').classList.remove('active'); }
 
+        function openPasswordModal() { document.getElementById('passwordModalOverlay').classList.add('active'); }
+        function closePasswordModal() { document.getElementById('passwordModalOverlay').classList.remove('active'); }
+
+        function handlePasswordChange(e) {
+            e.preventDefault();
+            const oldPass = document.getElementById('oldPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+
+            if (oldPass === currentAdminPassword) {
+                currentAdminPassword = newPass;
+                localStorage.setItem('elgazzar_admin_pass', newPass);
+                closePasswordModal();
+                document.getElementById('oldPassword').value = '';
+                document.getElementById('newPassword').value = '';
+                showToast("تم تغيير كلمة المرور بنجاح 🔐");
+            } else {
+                showToast("كلمة المرور الحالية غير صحيحة");
+            }
+        }
+
         function handleAuthSubmit(e) {
             e.preventDefault();
             const u = document.getElementById('authUsername').value.trim().toLowerCase();
             const p = document.getElementById('authPassword').value;
-            if (u === MASTER_ADMIN_USERNAME && p === MASTER_ADMIN_PASSWORD) {
+            if (u === MASTER_ADMIN_USERNAME && p === currentAdminPassword) {
                 currentUser = { username: MASTER_ADMIN_USERNAME, isAdmin: true };
                 localStorage.setItem('elgazzar_current_user', JSON.stringify(currentUser));
                 closeAuthModal();
@@ -293,9 +331,11 @@
             if (q) list = list.filter(item => item.title.toLowerCase().includes(q));
 
             if (list.length === 0) {
-                grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted);">لا توجد منتجات</p>';
+                grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted);">لا توجد منتجات حالياً</p>';
                 return;
             }
+
+            const auth = isUserAuthorized();
 
             list.forEach(p => {
                 const isFav = favorites.includes(p.id) ? 'active' : '';
@@ -303,6 +343,10 @@
                     <div class="product-card">
                         <div class="card-top-btns">
                             <button class="fav-card-btn ${isFav}" onclick="toggleFavorite(${p.id}, this)"><i class="fa-solid fa-heart"></i></button>
+                        </div>
+                        <div class="owner-actions" style="display: ${auth ? 'flex' : 'none'};">
+                            <button class="owner-btn edit-card-btn" onclick="openEditModal(${p.id})" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                            <button class="owner-btn delete-card-btn" onclick="deleteProduct(${p.id})" title="مسح"><i class="fa-solid fa-trash"></i></button>
                         </div>
                         <span class="badge">معتمد</span>
                         <div class="img-container"><img src="${p.img}" alt="${p.title}"></div>
@@ -356,42 +400,96 @@
         function filterCategory(cat) { currentFilterCategory = cat; renderProducts(); }
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('sidebarOverlay').classList.toggle('active'); }
         function toggleCart() { document.getElementById('cartModal').classList.toggle('active'); }
-        function openAdminModal() { if(!isUserAuthorized()) { showToast("للمالك فقط"); return; } document.getElementById('adminModalOverlay').classList.add('active'); }
+        
+        function openAdminModal() {
+            if(!isUserAuthorized()) { showToast("للمالك فقط"); return; }
+            document.getElementById('editProductId').value = '';
+            document.getElementById('prodTitle').value = '';
+            document.getElementById('prodPrice').value = '';
+            document.getElementById('prodCategory').value = 'السحالي';
+            document.getElementById('prodDesc').value = '';
+            document.getElementById('prodImgFile').required = true;
+            document.getElementById('modalFormTitle').innerText = "➕ إضافة منتج";
+            document.getElementById('submitProductBtn').innerText = "نشر المنتج";
+            document.getElementById('adminModalOverlay').classList.add('active');
+        }
+
+        function openEditModal(id) {
+            if(!isUserAuthorized()) { showToast("للمالك فقط"); return; }
+            const p = products.find(item => item.id === id);
+            if(!p) return;
+            document.getElementById('editProductId').value = p.id;
+            document.getElementById('prodTitle').value = p.title;
+            document.getElementById('prodPrice').value = p.price;
+            document.getElementById('prodCategory').value = p.category || 'السحالي';
+            document.getElementById('prodDesc').value = p.desc;
+            document.getElementById('prodImgFile').required = false;
+            document.getElementById('modalFormTitle').innerText = "✏️ تعديل المنتج";
+            document.getElementById('submitProductBtn').innerText = "حفظ التعديلات";
+            document.getElementById('adminModalOverlay').classList.add('active');
+        }
+
         function closeAdminModal() { document.getElementById('adminModalOverlay').classList.remove('active'); }
-        function openChatModal() { document.getElementById('chatModalOverlay').classList.add('active'); }
-        function closeChatModal() { document.getElementById('chatModalOverlay').classList.remove('active'); }
-        function renderChatMessages() {
-            const l = document.getElementById('chatMessagesList');
-            if(!l) return;
-            l.innerHTML = chatMessages.map(m => `<div><strong>${m.author}:</strong> ${m.text}</div>`).join('');
-        }
-        function handleSendPrivateMessage(e) {
-            e.preventDefault();
-            const txt = document.getElementById('chatInputText').value.trim();
-            if(!txt) return;
-            chatMessages.push({ author: currentUser ? currentUser.username : 'زائر', text: txt });
-            localStorage.setItem('elgazzar_private_chats', JSON.stringify(chatMessages));
-            document.getElementById('chatInputText').value = '';
-            renderChatMessages();
-        }
-        function handleProductSubmit(e) {
-            e.preventDefault();
-            const title = document.getElementById('prodTitle').value;
-            const price = Number(document.getElementById('prodPrice').value);
-            const desc = document.getElementById('prodDesc').value;
-            const fInput = document.getElementById('prodImgFile');
-            if(fInput.files && fInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    products.push({ id: Date.now(), title, price, img: evt.target.result, category: 'السحالي', desc });
-                    localStorage.setItem('elgazzar_products', JSON.stringify(products));
-                    closeAdminModal();
-                    renderProducts();
-                    showToast("تم النشر بنجاح");
-                };
-                reader.readAsDataURL(fInput.files[0]);
+        
+        function deleteProduct(id) {
+            if(!isUserAuthorized()) { showToast("للمالك فقط"); return; }
+            if(confirm("هل أنت متأكد من مسح هذا المنتج؟")) {
+                products = products.filter(item => item.id !== id);
+                localStorage.setItem('elgazzar_products', JSON.stringify(products));
+                renderProducts();
+                showToast("تم الحذف بنجاح");
             }
         }
+
+        function handleProductSubmit(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editProductId').value;
+            const title = document.getElementById('prodTitle').value;
+            const price = Number(document.getElementById('prodPrice').value);
+            const category = document.getElementById('prodCategory').value;
+            const desc = document.getElementById('prodDesc').value;
+            const fInput = document.getElementById('prodImgFile');
+
+            if (editId) {
+                const p = products.find(item => item.id == editId);
+                if (p) {
+                    p.title = title;
+                    p.price = price;
+                    p.category = category;
+                    p.desc = desc;
+                    
+                    if (fInput.files && fInput.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(evt) {
+                            p.img = evt.target.result;
+                            localStorage.setItem('elgazzar_products', JSON.stringify(products));
+                            closeAdminModal();
+                            renderProducts();
+                            showToast("تم تحديث المنتج بنجاح");
+                        };
+                        reader.readAsDataURL(fInput.files[0]);
+                    } else {
+                        localStorage.setItem('elgazzar_products', JSON.stringify(products));
+                        closeAdminModal();
+                        renderProducts();
+                        showToast("تم تحديث المنتج بنجاح");
+                    }
+                }
+            } else {
+                if (fInput.files && fInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        products.push({ id: Date.now(), title, price, img: evt.target.result, category, desc });
+                        localStorage.setItem('elgazzar_products', JSON.stringify(products));
+                        closeAdminModal();
+                        renderProducts();
+                        showToast("تم النشر بنجاح");
+                    };
+                    reader.readAsDataURL(fInput.files[0]);
+                }
+            }
+        }
+
         function sendWhatsAppOrder() {
             if(cart.length === 0) { showToast("السلة فارغة"); return; }
             let msg = "طلب جديد:%0A";
@@ -401,3 +499,4 @@
     </script>
 </body>
 </html>
+
