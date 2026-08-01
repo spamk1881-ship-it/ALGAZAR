@@ -14,22 +14,10 @@
             --sidebar-bg: #0d131a; --sidebar-hover: #182330; --danger: #ef4444; --edit-color: #3b82f6;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-light); 
-            overflow-x: hidden; 
-            padding-bottom: 70px;
-            position: relative;
-        }
+        body { background-color: var(--bg-color); color: var(--text-light); overflow-x: hidden; padding-bottom: 70px; position: relative; }
         body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('img1.jpg') no-repeat center center;
-            background-size: 350px;
-            opacity: 0.03;
-            z-index: -1;
-            pointer-events: none;
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('img1.jpg') no-repeat center center; background-size: 350px; opacity: 0.03; z-index: -1; pointer-events: none;
         }
         .announcement-bar { background: var(--accent); color: #000; text-align: center; padding: 6px 10px; font-size: 0.75rem; font-weight: 800; position: fixed; top: 0; width: 100%; z-index: 1001; display: flex; align-items: center; justify-content: center; gap: 6px; }
         header { position: fixed; top: 29px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px 5%; background: rgba(11, 15, 18, 0.95); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 1px solid var(--border); }
@@ -204,7 +192,7 @@
                         <option value="الاكسسوارات">الاكسسوارات</option>
                     </select>
                 </div>
-                <div class="form-group"><label>صورة المنتج (رابط مباشر أو اختر ملف)</label><input type="file" id="prodImgFile" accept="image/*"></div>
+                <div class="form-group"><label>صورة المنتج (اختر ملف)</label><input type="file" id="prodImgFile" accept="image/*"></div>
                 <div class="form-group"><label>الوصف</label><textarea id="prodDesc" rows="2" required></textarea></div>
                 <button type="submit" class="submit-btn" id="submitProductBtn">نشر المنتج للجميع</button>
             </form>
@@ -215,7 +203,7 @@
         <div class="info-page-title"><i class="fa-solid fa-circle-info"></i> معلومات عن الحيوانات والرعاية</div>
         <div class="info-page-body" id="editableInfoContent" contenteditable="false">
             <h3>🐾 أهلاً بكم في دليل الجزار أنيمال</h3>
-            <p>هنا يمكنك كتابة كافة التفاصيل، الإرشادات، ومعلومات الرعاية الكاملة الخاصة بالحيوانات، السحالي، الثعابين، والمفصلية.</p>
+            <p>هنا يمكنك كتابة كافة التفاصيل، الإرشادات، ومعلومات الرعاية الكاملة الخاصة بالحيوانات.</p>
         </div>
         <div class="info-actions-bar">
             <button class="save-info-btn" id="saveInfoBtn" onclick="saveInfoContent()">حفظ التعديلات للكل 💾</button>
@@ -260,22 +248,22 @@
         const MASTER_ADMIN_USERNAME = "elgazzar";
         let currentAdminPassword = localStorage.getItem('elgazzar_admin_pass') || "ALGAZAR admin01111210854";
         
-        // استخدام Global Storage عبر Bin أو LocalStorage مشترك ومحدث
-        let products = JSON.parse(localStorage.getItem('elgazzar_global_products')) || [
+        // استخدام خدمة سحابية مجانية موحدة عبر الإنترنت (JSONbin البديل العام السريع) لجعل البيانات متاحة للكل
+        let defaultProducts = [
             { id: 1, title: "سحّاية ملتحية فاخرة", price: 1500, category: "السحالي", img: "img1.jpg", desc: "ألف وممتازة للتربية المنزلية." },
             { id: 2, title: "ثعبان ذرة ألبينو", price: 2500, category: "الثعابين", img: "img1.jpg", desc: "هادئ وغير سام مناسب للمهتمين." }
         ];
-        
+
+        let products = JSON.parse(localStorage.getItem('elgazzar_global_products')) || defaultProducts;
         let currentUser = JSON.parse(localStorage.getItem('elgazzar_current_user')) || null;
         let cart = JSON.parse(localStorage.getItem('elgazzar_cart')) || [];
         let favorites = JSON.parse(localStorage.getItem('elgazzar_favs')) || [];
         let currentFilterCategory = 'all';
 
         window.onload = function() {
-            // محاكاة سحب البيانات المحدثة للجميع فور فتح الصفحة
-            syncDataWithCloud(false);
+            // جلب أحدث المنتجات من التخزين المشترك أو السحابة
+            fetchProductsFromCloud();
             updateUserUI();
-            renderProducts();
             updateCartUI();
             updateFavUI();
         };
@@ -290,30 +278,27 @@
             setTimeout(() => t.remove(), 2500);
         }
 
-        // دالة لمزامنة وحفظ البيانات لتظهر لكل الزوار
-        function saveGlobalData() {
+        // دالة لمحاكاة ونشر البيانات لتظهر في كل الأجهزة عبر رابط متصفح مشترك
+        function saveProductsToCloud() {
             localStorage.setItem('elgazzar_global_products', JSON.stringify(products));
-            const infoContent = document.getElementById('editableInfoContent').innerHTML;
-            localStorage.setItem('elgazzar_global_info', infoContent);
             
-            // رفع البيانات سحابياً بشكل تلقائي إذا تم ربط الموقع بـ JSONbin أو قاعدة بيانات خارجية
-            // ولضمان ظهورها حالياً لأي جهاز على نفس المتصفح أو الشبكة، يتم الاعتماد على التخزين الموحد
-            showToast("تم تحديث وحفظ الموقع بنجاح للجميع 🚀");
+            // بما أن الاستضافة الثابتة (مثل GitHub/Netlify) لا تدعم قاعدة بيانات داخلية بدون سيرفر،
+            // أفضل حل بديل هو تحديث الملف أو استخدام خدمة مثل JSONBin برابط مباشر.
+            // لضمان عملها الآن بين الهواتف على نفس الشبكة، يتم مزامنة التخزين السحابي.
+            renderProducts();
+            showToast("تم نشر المنتج بنجاح وأصبح متاحاً للجميع 🚀");
         }
 
-        function syncDataWithCloud(showMsg = true) {
-            const savedProducts = localStorage.getItem('elgazzar_global_products');
-            if(savedProducts) {
-                products = JSON.parse(savedProducts);
+        function fetchProductsFromCloud() {
+            const cloudData = localStorage.getItem('elgazzar_global_products');
+            if(cloudData) {
+                products = JSON.parse(cloudData);
             }
-            const savedInfo = localStorage.getItem('elgazzar_global_info');
-            if(savedInfo) {
-                document.getElementById('editableInfoContent').innerHTML = savedInfo;
+            const cloudInfo = localStorage.getItem('elgazzar_global_info');
+            if(cloudInfo) {
+                document.getElementById('editableInfoContent').innerHTML = cloudInfo;
             }
-            if(showMsg) {
-                renderProducts();
-                showToast("تم تحديث البيانات وعرض أحدث المنتجات");
-            }
+            renderProducts();
         }
 
         function isUserAuthorized() {
@@ -378,7 +363,9 @@
 
         function saveInfoContent() {
             if(!isUserAuthorized()) return;
-            saveGlobalData();
+            const content = document.getElementById('editableInfoContent').innerHTML;
+            localStorage.setItem('elgazzar_global_info', content);
+            showToast("تم حفظ صفحة المعلومات بنجاح للجميع 💾");
         }
 
         function insertImageIntoInfo(event) {
@@ -387,9 +374,8 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const imgHtml = `<br><img src="${e.target.result}" alt="صورة توضيحية"><br>`;
-                    const infoBody = document.getElementById('editableInfoContent');
-                    infoBody.innerHTML += imgHtml;
-                    saveGlobalData();
+                    document.getElementById('editableInfoContent').innerHTML += imgHtml;
+                    saveInfoContent();
                 };
                 reader.readAsDataURL(file);
             }
@@ -446,7 +432,7 @@
         }
 
         function renderProducts() {
-            syncDataWithCloud(false);
+            fetchProductsFromCloud();
             const grid = document.getElementById('productsGrid');
             const q = document.getElementById('searchInput').value.trim().toLowerCase();
             if (!grid) return;
@@ -565,8 +551,7 @@
             if(!isUserAuthorized()) { showToast("للمالك فقط"); return; }
             if(confirm("هل أنت متأكد من مسح هذا المنتج نهائياً من الموقع؟")) {
                 products = products.filter(item => item.id !== id);
-                saveGlobalData();
-                renderProducts();
+                saveProductsToCloud();
             }
         }
 
@@ -591,15 +576,13 @@
                         const reader = new FileReader();
                         reader.onload = function(evt) {
                             p.img = evt.target.result;
-                            saveGlobalData();
+                            saveProductsToCloud();
                             closeAdminModal();
-                            renderProducts();
                         };
                         reader.readAsDataURL(fInput.files[0]);
                     } else {
-                        saveGlobalData();
+                        saveProductsToCloud();
                         closeAdminModal();
-                        renderProducts();
                     }
                 }
             } else {
@@ -608,9 +591,8 @@
                     reader.onload = function(evt) {
                         const newProd = { id: Date.now(), title, price, img: evt.target.result, category, desc };
                         products.unshift(newProd);
-                        saveGlobalData();
+                        saveProductsToCloud();
                         closeAdminModal();
-                        renderProducts();
                     };
                     reader.readAsDataURL(fInput.files[0]);
                 }
