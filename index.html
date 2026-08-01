@@ -14,14 +14,31 @@
             --sidebar-bg: #0d131a; --sidebar-hover: #182330; --danger: #ef4444; --edit-color: #3b82f6;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-light); overflow-x: hidden; padding-bottom: 70px; }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-light); 
+            overflow-x: hidden; 
+            padding-bottom: 70px;
+            position: relative;
+        }
+        /* خلفية مائية بشعار الموقع */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('img1.jpg') no-repeat center center;
+            background-size: 350px;
+            opacity: 0.03;
+            z-index: -1;
+            pointer-events: none;
+        }
         .announcement-bar { background: var(--accent); color: #000; text-align: center; padding: 6px 10px; font-size: 0.75rem; font-weight: 800; position: fixed; top: 0; width: 100%; z-index: 1001; display: flex; align-items: center; justify-content: center; gap: 6px; }
         header { position: fixed; top: 29px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px 5%; background: rgba(11, 15, 18, 0.95); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 1px solid var(--border); }
         .header-right { display: flex; align-items: center; gap: 15px; }
         .menu-toggle-btn { font-size: 1.4rem; color: var(--text-light); cursor: pointer; }
         .logo-container { display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
-        .logo-text { font-size: 19px; font-weight: 900; color: var(--primary); }
+        .logo-text { font-size: 18px; font-weight: 900; color: var(--primary); direction: ltr; display: flex; align-items: center; gap: 5px; }
         .logo-text span { color: var(--accent); }
         .header-actions { display: flex; align-items: center; gap: 10px; }
         .user-auth-btn, .admin-panel-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text-light); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; }
@@ -51,11 +68,23 @@
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--text-light); outline: none; font-size: 0.9rem; }
         .submit-btn { width: 100%; padding: 12px; background: var(--accent); color: #000; border: none; border-radius: 10px; font-weight: 900; cursor: pointer; margin-top: 10px; }
         .hero { margin-top: 85px; padding: 35px 20px 20px; text-align: center; }
-        .hero h1 { font-size: 2rem; font-weight: 900; }
+        .hero h1 { font-size: 2rem; font-weight: 900; display: inline-flex; align-items: center; gap: 10px; justify-content: center; }
         .hero h1 span { color: var(--accent); }
         .top-search-container { width: 100%; max-width: 580px; position: relative; margin: 15px auto 0; }
         .top-search-container input { width: 100%; padding: 13px 45px 13px 20px; background: rgba(20, 27, 34, 0.95); border: 2px solid var(--primary); border-radius: 30px; color: var(--text-light); font-size: 0.95rem; outline: none; }
         .top-search-container i { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--primary); }
+        
+        .info-page-container { max-width: 900px; margin: 100px auto 30px; padding: 30px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; }
+        .info-page-container.active { display: block; }
+        .info-page-title { font-size: 1.8rem; font-weight: 900; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--border); padding-bottom: 12px; }
+        .info-page-body { font-size: 1rem; line-height: 2; color: var(--text-light); outline: none; }
+        .info-page-body h3 { color: var(--accent); margin-top: 20px; margin-bottom: 10px; font-size: 1.3rem; }
+        .info-page-body p { margin-bottom: 12px; color: var(--text-muted); }
+        .info-page-body img { max-width: 100%; border-radius: 12px; margin: 15px 0; border: 1px solid var(--border); }
+        .info-actions-bar { display: flex; gap: 10px; margin-top: 20px; align-items: center; flex-wrap: wrap; }
+        .save-info-btn { background: var(--primary); color: #000; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 900; cursor: pointer; display: none; }
+        .add-img-info-btn { background: var(--edit-color); color: #fff; border: none; padding: 10px 15px; border-radius: 10px; font-weight: 700; cursor: pointer; display: none; font-size: 0.85rem; }
+
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 25px 5% 60px; }
         .product-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; position: relative; }
         .card-top-btns { position: absolute; top: 10px; left: 10px; z-index: 10; display: flex; gap: 6px; }
@@ -96,9 +125,9 @@
     <header>
         <div class="header-right">
             <div class="menu-toggle-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
-            <a href="#" class="logo-container">
+            <a href="index.html" class="logo-container">
                 <img src="img1.jpg" alt="Logo" class="logo-img" id="headerLogoImg">
-                <div class="logo-text">الجزار <span>أنيمال</span></div>
+                <div class="logo-text">Elgazzar <span>Animals</span></div>
             </a>
         </div>
         <div class="header-actions">
@@ -120,14 +149,17 @@
         <ul class="sidebar-menu">
             <a class="sidebar-item" id="sidebarAddProductItem" onclick="openAdminModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-plus-circle" style="color:var(--accent);"></i><span>إضافة منتج جديد</span></div></a>
             <a class="sidebar-item" id="sidebarChangePassItem" onclick="openPasswordModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-key" style="color:var(--primary);"></i><span>تغيير كلمة المرور</span></div></a>
+            
+            <a class="sidebar-item" onclick="showInfoPage(); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-circle-info" style="color:var(--primary);"></i><span>معلومات الحيوانات</span></div></a>
+
             <div class="sidebar-category-header">الأقسام</div>
-            <a class="sidebar-item" onclick="filterCategory('all'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-border-all"></i><span>عرض الكل</span></div></a>
-            <a class="sidebar-item" onclick="filterCategory('السحالي'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-dragon"></i><span>السحالي</span></div></a>
-            <a class="sidebar-item" onclick="filterCategory('الثعابين'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-staff-snake"></i><span>الثعابين</span></div></a>
-            <a class="sidebar-item" onclick="filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span></div></a>
-            <a class="sidebar-item" onclick="filterCategory('الحيوانات البريه'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-paw"></i><span>الحيوانات البريه</span></div></a>
-            <a class="sidebar-item" onclick="filterCategory('التجهيزات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-box-archive"></i><span>التجهيزات</span></div></a>
-            <a class="sidebar-item" onclick="filterCategory('الاكسسوارات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-puzzle-piece"></i><span>الاكسسوارات</span></div></a>
+            <a class="sidebar-item" onclick="showMainHome(); filterCategory('all'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-border-all"></i><span>عرض الكل</span></div></a>
+            <a class="sidebar-item" onclick="showMainHome(); filterCategory('السحالي'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-dragon"></i><span>السحالي</span></div></a>
+            <a class="sidebar-item" onclick="showMainHome(); filterCategory('الثعابين'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-staff-snake"></i><span>الثعابين</span></div></a>
+            <a class="sidebar-item" onclick="showMainHome(); filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span></div></a>
+            <a class="sidebar-item" onclick="showMainHome(); filterCategory('الحيوانات البريه'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-paw"></i><span>الحيوانات البريه</span></div></a>
+            <a class="sidebar-item" onclick="showMainHome(); filterCategory('التجهيزات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-box-archive"></i><span>التجهيزات</span></div></a>
+            <a class="sidebar-item" onclick="showMainHome(); filterCategory('الاكسسوارات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-puzzle-piece"></i><span>الاكسسوارات</span></div></a>
         </ul>
     </aside>
 
@@ -143,7 +175,6 @@
         </div>
     </div>
 
-    <!-- نافذة تغيير كلمة المرور -->
     <div class="modal-overlay" id="passwordModalOverlay">
         <div class="modal-box">
             <span class="close-modal-btn" onclick="closePasswordModal()">&times;</span>
@@ -156,7 +187,6 @@
         </div>
     </div>
 
-    <!-- نافذة إضافة أو تعديل منتج -->
     <div class="modal-overlay" id="adminModalOverlay">
         <div class="modal-box">
             <span class="close-modal-btn" onclick="closeAdminModal()">&times;</span>
@@ -182,15 +212,36 @@
         </div>
     </div>
 
-    <section class="hero">
-        <h1>معرض <span>الجزار أنيمال</span></h1>
-        <div class="top-search-container">
-            <input type="text" id="searchInput" placeholder="ابحث..." onkeyup="renderProducts()">
-            <i class="fa-solid fa-magnifying-glass"></i>
+    <div class="info-page-container" id="infoPageContainer">
+        <div class="info-page-title"><i class="fa-solid fa-circle-info"></i> معلومات عن الحيوانات والرعاية</div>
+        <div class="info-page-body" id="editableInfoContent" contenteditable="false">
+            <h3>🐾 أهلاً بكم في دليل الجزار أنيمال</h3>
+            <p>هنا يمكنك كتابة كافة التفاصيل، الإرشادات، ومعلومات الرعاية الكاملة الخاصة بالحيوانات، السحالي، الثعابين، والمفصلية لتعريف العملاء بكل ما يهمهم.</p>
+            
+            <h3>🌡️ نصائح التربية والبيئة المناسبة</h3>
+            <p>احرص دائماً على توفير درجات الحرارة السليمة والإضاءة الضرورية لكل فصيلة، بالإضافة إلى المتابعة المستمرة للحفاظ على صحة الحيوانات.</p>
+            
+            <h3>📞 الاستشارات والطلبات</h3>
+            <p>للاستفسارات الخاصة أو الاستشارات المجانية، تواصل معنا دائماً عبر أرقام الواتساب الظاهرة في الموقع.</p>
         </div>
-    </section>
+        <div class="info-actions-bar">
+            <button class="save-info-btn" id="saveInfoBtn" onclick="saveInfoContent()">حفظ التعديلات 💾</button>
+            <input type="file" id="infoImageInput" accept="image/*" style="display:none;" onchange="insertImageIntoInfo(event)">
+            <button class="add-img-info-btn" id="addImgInfoBtn" onclick="document.getElementById('infoImageInput').click()">📷 إضافة صورة من المعرض</button>
+        </div>
+    </div>
 
-    <section class="products-grid" id="productsGrid"></section>
+    <div id="homeMainContent">
+        <section class="hero">
+            <h1>Elgazzar <span>Animals</span> <i class="fa-solid fa-paw" style="color:var(--accent); font-size:1.6rem;"></i></h1>
+            <div class="top-search-container">
+                <input type="text" id="searchInput" placeholder="ابحث..." onkeyup="renderProducts()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+        </section>
+
+        <section class="products-grid" id="productsGrid"></section>
+    </div>
 
     <div class="cart-modal" id="cartModal">
         <div class="cart-header">
@@ -205,9 +256,10 @@
 
     <a href="https://wa.me/201111210854" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
 
+    <!-- شريط التنقل السفلي المحدث -->
     <nav class="bottom-nav">
-        <a href="#" class="nav-item active"><i class="fa-solid fa-house"></i><span>الرئيسية</span></a>
-        <a class="nav-item" onclick="toggleSidebar()"><i class="fa-solid fa-layer-group"></i><span>الأقسام</span></a>
+        <a href="index.html" class="nav-item active" id="navHome" onclick="showMainHome()"><i class="fa-solid fa-house"></i><span>الرئيسية</span></a>
+        <a class="nav-item" id="navInfo" onclick="showInfoPage()"><i class="fa-solid fa-circle-info"></i><span>المعلومات</span></a>
         <a class="nav-item" id="navAddBtn" onclick="openAdminModal()" style="display:none;"><i class="fa-solid fa-plus-circle"></i><span>إضافة</span></a>
         <a class="nav-item" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i><span>السلة</span></a>
     </nav>
@@ -216,13 +268,22 @@
         const MASTER_ADMIN_USERNAME = "elgazzar";
         let currentAdminPassword = localStorage.getItem('elgazzar_admin_pass') || "ALGAZAR admin01111210854";
         
-        let products = JSON.parse(localStorage.getItem('elgazzar_products')) || [];
+        // جلب المنتجات المحدثة وتوفير منتجات افتراضية أولية إذا كانت فارغة لضمان ظهورها للجميع
+        let products = JSON.parse(localStorage.getItem('elgazzar_products')) || [
+            { id: 1, title: "سحّاية ملتحية فاخرة", price: 1500, category: "السحالي", img: "img1.jpg", desc: "ألف وممتازة للتربية المنزلية." },
+            { id: 2, title: "ثعبان ذرة ألبينو", price: 2500, category: "الثعابين", img: "img1.jpg", desc: "هادئ وغير سام مناسب للمهتمين." }
+        ];
+        
         let currentUser = JSON.parse(localStorage.getItem('elgazzar_current_user')) || null;
         let cart = JSON.parse(localStorage.getItem('elgazzar_cart')) || [];
         let favorites = JSON.parse(localStorage.getItem('elgazzar_favs')) || [];
         let currentFilterCategory = 'all';
 
         window.onload = function() {
+            const savedInfo = localStorage.getItem('elgazzar_info_page_content');
+            if(savedInfo) {
+                document.getElementById('editableInfoContent').innerHTML = savedInfo;
+            }
             updateUserUI();
             renderProducts();
             updateCartUI();
@@ -246,6 +307,9 @@
         function updateUserUI() {
             const auth = isUserAuthorized();
             const ownerActionsList = document.querySelectorAll('.owner-actions');
+            const infoBody = document.getElementById('editableInfoContent');
+            const saveBtn = document.getElementById('saveInfoBtn');
+            const addImgBtn = document.getElementById('addImgInfoBtn');
             
             if (currentUser) {
                 document.getElementById('authBtnText').innerText = "خروج";
@@ -257,6 +321,13 @@
                     document.getElementById('sidebarAddProductItem').style.display = 'flex';
                     document.getElementById('sidebarChangePassItem').style.display = 'flex';
                     ownerActionsList.forEach(el => el.style.display = 'flex');
+                    
+                    infoBody.contentEditable = "true";
+                    infoBody.style.border = "1px dashed var(--primary)";
+                    infoBody.style.padding = "15px";
+                    infoBody.style.borderRadius = "10px";
+                    saveBtn.style.display = "block";
+                    addImgBtn.style.display = "block";
                 }
             } else {
                 document.getElementById('authBtnText').innerText = "دخول";
@@ -267,6 +338,47 @@
                 document.getElementById('sidebarAddProductItem').style.display = 'none';
                 document.getElementById('sidebarChangePassItem').style.display = 'none';
                 ownerActionsList.forEach(el => el.style.display = 'none');
+                
+                infoBody.contentEditable = "false";
+                infoBody.style.border = "none";
+                saveBtn.style.display = "none";
+                addImgBtn.style.display = "none";
+            }
+        }
+
+        function showInfoPage() {
+            document.getElementById('homeMainContent').style.display = 'none';
+            document.getElementById('infoPageContainer').classList.add('active');
+            document.getElementById('navInfo').classList.add('active');
+            document.getElementById('navHome').classList.remove('active');
+        }
+
+        function showMainHome() {
+            document.getElementById('infoPageContainer').classList.remove('active');
+            document.getElementById('homeMainContent').style.display = 'block';
+            document.getElementById('navHome').classList.add('active');
+            document.getElementById('navInfo').classList.remove('active');
+        }
+
+        function saveInfoContent() {
+            if(!isUserAuthorized()) return;
+            const content = document.getElementById('editableInfoContent').innerHTML;
+            localStorage.setItem('elgazzar_info_page_content', content);
+            showToast("تم حفظ صفحة المعلومات بنجاح 💾");
+        }
+
+        function insertImageIntoInfo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgHtml = `<br><img src="${e.target.result}" alt="صورة توضيحية"><br>`;
+                    const infoBody = document.getElementById('editableInfoContent');
+                    infoBody.innerHTML += imgHtml;
+                    saveInfoContent();
+                    showToast("تم إدراج الصورة بنجاح 📷");
+                };
+                reader.readAsDataURL(file);
             }
         }
 
@@ -397,7 +509,12 @@
             updateCartUI();
         }
 
-        function filterCategory(cat) { currentFilterCategory = cat; renderProducts(); }
+        function filterCategory(cat) { 
+            currentFilterCategory = cat; 
+            showMainHome();
+            renderProducts(); 
+        }
+
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('sidebarOverlay').classList.toggle('active'); }
         function toggleCart() { document.getElementById('cartModal').classList.toggle('active'); }
         
@@ -465,25 +582,26 @@
                             localStorage.setItem('elgazzar_products', JSON.stringify(products));
                             closeAdminModal();
                             renderProducts();
-                            showToast("تم تحديث المنتج بنجاح");
+                            showToast("تم تحديث المنتج بنجاح وتحديثه للجميع");
                         };
                         reader.readAsDataURL(fInput.files[0]);
                     } else {
                         localStorage.setItem('elgazzar_products', JSON.stringify(products));
                         closeAdminModal();
                         renderProducts();
-                        showToast("تم تحديث المنتج بنجاح");
+                        showToast("تم تحديث المنتج بنجاح وتحديثه للجميع");
                     }
                 }
             } else {
                 if (fInput.files && fInput.files[0]) {
                     const reader = new FileReader();
                     reader.onload = function(evt) {
-                        products.push({ id: Date.now(), title, price, img: evt.target.result, category, desc });
+                        const newProd = { id: Date.now(), title, price, img: evt.target.result, category, desc };
+                        products.unshift(newProd); // يضيف المنتج الجديد في البداية ليرى الجميع آخر ما تم نزوله
                         localStorage.setItem('elgazzar_products', JSON.stringify(products));
                         closeAdminModal();
                         renderProducts();
-                        showToast("تم النشر بنجاح");
+                        showToast("تم نشر المنتج بنجاح وأصبح متاحاً للكل 🚀");
                     };
                     reader.readAsDataURL(fInput.files[0]);
                 }
