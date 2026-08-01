@@ -15,10 +15,6 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-light); overflow-x: hidden; padding-bottom: 70px; position: relative; }
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('img1.jpg') no-repeat center center; background-size: 350px; opacity: 0.03; z-index: -1; pointer-events: none;
-        }
         .announcement-bar { background: var(--accent); color: #000; text-align: center; padding: 6px 10px; font-size: 0.75rem; font-weight: 800; position: fixed; top: 0; width: 100%; z-index: 1001; display: flex; align-items: center; justify-content: center; gap: 6px; }
         header { position: fixed; top: 29px; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px 5%; background: rgba(11, 15, 18, 0.95); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 1px solid var(--border); }
         .header-right { display: flex; align-items: center; gap: 15px; }
@@ -60,18 +56,6 @@
         .top-search-container { width: 100%; max-width: 580px; position: relative; margin: 15px auto 0; }
         .top-search-container input { width: 100%; padding: 13px 45px 13px 20px; background: rgba(20, 27, 34, 0.95); border: 2px solid var(--primary); border-radius: 30px; color: var(--text-light); font-size: 0.95rem; outline: none; }
         .top-search-container i { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--primary); }
-        
-        .info-page-container { max-width: 900px; margin: 100px auto 30px; padding: 30px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; }
-        .info-page-container.active { display: block; }
-        .info-page-title { font-size: 1.8rem; font-weight: 900; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--border); padding-bottom: 12px; }
-        .info-page-body { font-size: 1rem; line-height: 2; color: var(--text-light); outline: none; }
-        .info-page-body h3 { color: var(--accent); margin-top: 20px; margin-bottom: 10px; font-size: 1.3rem; }
-        .info-page-body p { margin-bottom: 12px; color: var(--text-muted); }
-        .info-page-body img { max-width: 100%; border-radius: 12px; margin: 15px 0; border: 1px solid var(--border); }
-        .info-actions-bar { display: flex; gap: 10px; margin-top: 20px; align-items: center; flex-wrap: wrap; }
-        .save-info-btn { background: var(--primary); color: #000; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 900; cursor: pointer; display: none; }
-        .add-img-info-btn { background: var(--edit-color); color: #fff; border: none; padding: 10px 15px; border-radius: 10px; font-weight: 700; cursor: pointer; display: none; font-size: 0.85rem; }
-
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 25px 5% 60px; }
         .product-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; position: relative; }
         .card-top-btns { position: absolute; top: 10px; left: 10px; z-index: 10; display: flex; gap: 6px; }
@@ -81,7 +65,6 @@
         .owner-btn { background: rgba(0,0,0,0.7); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
         .edit-card-btn { color: var(--edit-color); }
         .delete-card-btn { color: var(--danger); }
-        .owner-btn:hover { background: #fff; }
         .badge { position: absolute; top: 10px; right: 10px; background: var(--accent); color: #000; font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 8px; z-index: 10; }
         .img-container { width: 100%; height: 180px; background: #070b0d; display: flex; align-items: center; justify-content: center; padding: 10px; }
         .product-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
@@ -113,14 +96,13 @@
         <div class="header-right">
             <div class="menu-toggle-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
             <a href="index.html" class="logo-container">
-                <img src="img1.jpg" alt="Logo" class="logo-img" id="headerLogoImg">
+                <img src="img1.jpg" alt="Logo" class="logo-img">
                 <div class="logo-text">Elgazzar <span>Animals</span></div>
             </a>
         </div>
         <div class="header-actions">
             <button class="user-auth-btn" id="authBtn" onclick="handleAuthBtnClick()"><i class="fa-solid fa-user"></i> <span id="authBtnText">دخول</span></button>
             <button class="admin-panel-btn" id="headerAddBtn" onclick="openAdminModal()"><i class="fa-solid fa-plus-circle"></i> <span>إضافة</span></button>
-            <div class="fav-icon-btn" onclick="filterFavorites()"><i class="fa-solid fa-heart"></i><span class="badge-count" id="favCount">0</span></div>
             <div class="cart-icon-btn" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i><span class="badge-count" id="cartCount">0</span></div>
         </div>
     </header>
@@ -129,47 +111,29 @@
     <aside class="sidebar" id="sidebar">
         <span class="close-sidebar-btn" onclick="toggleSidebar()">&times;</span>
         <div class="sidebar-profile">
-            <img src="img1.jpg" alt="Logo" class="profile-img" id="sidebarProfileImg">
+            <img src="img1.jpg" alt="Logo" class="profile-img">
             <div style="font-size:1.1rem; font-weight:900;" id="sidebarUserName">زائر</div>
-            <div style="font-size:0.75rem; color:var(--primary);" id="sidebarUserEmail">يرجى تسجيل الدخول</div>
+            <div style="font-size:0.75rem; color:var(--primary);" id="sidebarUserEmail">تسجيل الدخول مطلوب</div>
         </div>
         <ul class="sidebar-menu">
             <a class="sidebar-item" id="sidebarAddProductItem" onclick="openAdminModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-plus-circle" style="color:var(--accent);"></i><span>إضافة منتج جديد</span></div></a>
-            <a class="sidebar-item" id="sidebarChangePassItem" onclick="openPasswordModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-key" style="color:var(--primary);"></i><span>تغيير كلمة المرور</span></div></a>
-            
-            <a class="sidebar-item" onclick="showInfoPage(); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-circle-info" style="color:var(--primary);"></i><span>معلومات الحيوانات</span></div></a>
-
             <div class="sidebar-category-header">الأقسام</div>
-            <a class="sidebar-item" onclick="showMainHome(); filterCategory('all'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-border-all"></i><span>عرض الكل</span></div></a>
-            <a class="sidebar-item" onclick="showMainHome(); filterCategory('السحالي'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-dragon"></i><span>السحالي</span></div></a>
-            <a class="sidebar-item" onclick="showMainHome(); filterCategory('الثعابين'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-staff-snake"></i><span>الثعابين</span></div></a>
-            <a class="sidebar-item" onclick="showMainHome(); filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span></div></a>
-            <a class="sidebar-item" onclick="showMainHome(); filterCategory('الحيوانات البريه'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-paw"></i><span>الحيوانات البريه</span></div></a>
-            <a class="sidebar-item" onclick="showMainHome(); filterCategory('التجهيزات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-box-archive"></i><span>التجهيزات</span></div></a>
-            <a class="sidebar-item" onclick="showMainHome(); filterCategory('الاكسسوارات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-puzzle-piece"></i><span>الاكسسوارات</span></div></a>
+            <a class="sidebar-item" onclick="filterCategory('all'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-border-all"></i><span>عرض الكل</span></div></a>
+            <a class="sidebar-item" onclick="filterCategory('السحالي'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-dragon"></i><span>السحالي</span></div></a>
+            <a class="sidebar-item" onclick="filterCategory('الثعابين'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-staff-snake"></i><span>الثعابين</span></div></a>
+            <a class="sidebar-item" onclick="filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span></div></a>
+            <a class="sidebar-item" onclick="filterCategory('التجهيزات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-box-archive"></i><span>التجهيزات</span></div></a>
         </ul>
     </aside>
 
     <div class="modal-overlay" id="authModalOverlay">
         <div class="modal-box">
             <span class="close-modal-btn" onclick="closeAuthModal()">&times;</span>
-            <h2 id="authTitle" style="color:var(--primary); margin-bottom:15px; font-size:1.2rem; text-align:center;">🔑 تسجيل الدخول</h2>
-            <form id="authForm" onsubmit="handleAuthSubmit(event)">
+            <h2 style="color:var(--primary); margin-bottom:15px; font-size:1.2rem; text-align:center;">🔑 دخول المالك</h2>
+            <form onsubmit="handleAuthSubmit(event)">
                 <div class="form-group"><label>اسم المستخدم</label><input type="text" id="authUsername" required></div>
                 <div class="form-group"><label>كلمة المرور</label><input type="password" id="authPassword" required></div>
-                <button type="submit" class="submit-btn" id="authSubmitBtn">دخول</button>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="passwordModalOverlay">
-        <div class="modal-box">
-            <span class="close-modal-btn" onclick="closePasswordModal()">&times;</span>
-            <h2 style="color:var(--primary); margin-bottom:15px; font-size:1.2rem;">🔒 تغيير كلمة المرور</h2>
-            <form onsubmit="handlePasswordChange(event)">
-                <div class="form-group"><label>كلمة المرور الحالية</label><input type="password" id="oldPassword" required></div>
-                <div class="form-group"><label>كلمة المرور الجديدة</label><input type="password" id="newPassword" required></div>
-                <button type="submit" class="submit-btn">حفظ كلمة المرور الجديدة</button>
+                <button type="submit" class="submit-btn">دخول</button>
             </form>
         </div>
     </div>
@@ -187,42 +151,25 @@
                         <option value="السحالي">السحالي</option>
                         <option value="الثعابين">الثعابين</option>
                         <option value="المفصلية">المفصلية</option>
-                        <option value="الحيوانات البريه">الحيوانات البريه</option>
                         <option value="التجهيزات">التجهيزات</option>
-                        <option value="الاكسسوارات">الاكسسوارات</option>
                     </select>
                 </div>
-                <div class="form-group"><label>صورة المنتج (اختر ملف)</label><input type="file" id="prodImgFile" accept="image/*"></div>
+                <div class="form-group"><label>صورة المنتج</label><input type="file" id="prodImgFile" accept="image/*"></div>
                 <div class="form-group"><label>الوصف</label><textarea id="prodDesc" rows="2" required></textarea></div>
-                <button type="submit" class="submit-btn" id="submitProductBtn">نشر المنتج للجميع</button>
+                <button type="submit" class="submit-btn" id="submitProductBtn">نشر المنتج</button>
             </form>
         </div>
     </div>
 
-    <div class="info-page-container" id="infoPageContainer">
-        <div class="info-page-title"><i class="fa-solid fa-circle-info"></i> معلومات عن الحيوانات والرعاية</div>
-        <div class="info-page-body" id="editableInfoContent" contenteditable="false">
-            <h3>🐾 أهلاً بكم في دليل الجزار أنيمال</h3>
-            <p>هنا يمكنك كتابة كافة التفاصيل، الإرشادات، ومعلومات الرعاية الكاملة الخاصة بالحيوانات.</p>
+    <section class="hero">
+        <h1>Elgazzar <span>Animals</span> <i class="fa-solid fa-paw" style="color:var(--accent); font-size:1.6rem;"></i></h1>
+        <div class="top-search-container">
+            <input type="text" id="searchInput" placeholder="ابحث..." onkeyup="renderProducts()">
+            <i class="fa-solid fa-magnifying-glass"></i>
         </div>
-        <div class="info-actions-bar">
-            <button class="save-info-btn" id="saveInfoBtn" onclick="saveInfoContent()">حفظ التعديلات للكل 💾</button>
-            <input type="file" id="infoImageInput" accept="image/*" style="display:none;" onchange="insertImageIntoInfo(event)">
-            <button class="add-img-info-btn" id="addImgInfoBtn" onclick="document.getElementById('infoImageInput').click()">📷 إضافة صورة</button>
-        </div>
-    </div>
+    </section>
 
-    <div id="homeMainContent">
-        <section class="hero">
-            <h1>Elgazzar <span>Animals</span> <i class="fa-solid fa-paw" style="color:var(--accent); font-size:1.6rem;"></i></h1>
-            <div class="top-search-container">
-                <input type="text" id="searchInput" placeholder="ابحث..." onkeyup="renderProducts()">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-        </section>
-
-        <section class="products-grid" id="productsGrid"></section>
-    </div>
+    <section class="products-grid" id="productsGrid"></section>
 
     <div class="cart-modal" id="cartModal">
         <div class="cart-header">
@@ -238,8 +185,7 @@
     <a href="https://wa.me/201111210854" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
 
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item active" id="navHome" onclick="showMainHome()"><i class="fa-solid fa-house"></i><span>الرئيسية</span></a>
-        <a class="nav-item" id="navInfo" onclick="showInfoPage()"><i class="fa-solid fa-circle-info"></i><span>المعلومات</span></a>
+        <a href="index.html" class="nav-item active"><i class="fa-solid fa-house"></i><span>الرئيسية</span></a>
         <a class="nav-item" id="navAddBtn" onclick="openAdminModal()" style="display:none;"><i class="fa-solid fa-plus-circle"></i><span>إضافة</span></a>
         <a class="nav-item" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i><span>السلة</span></a>
     </nav>
@@ -248,24 +194,19 @@
         const MASTER_ADMIN_USERNAME = "elgazzar";
         let currentAdminPassword = localStorage.getItem('elgazzar_admin_pass') || "ALGAZAR admin01111210854";
         
-        // استخدام خدمة سحابية مجانية موحدة عبر الإنترنت (JSONbin البديل العام السريع) لجعل البيانات متاحة للكل
-        let defaultProducts = [
+        let products = JSON.parse(localStorage.getItem('elgazzar_clean_products')) || [
             { id: 1, title: "سحّاية ملتحية فاخرة", price: 1500, category: "السحالي", img: "img1.jpg", desc: "ألف وممتازة للتربية المنزلية." },
             { id: 2, title: "ثعبان ذرة ألبينو", price: 2500, category: "الثعابين", img: "img1.jpg", desc: "هادئ وغير سام مناسب للمهتمين." }
         ];
-
-        let products = JSON.parse(localStorage.getItem('elgazzar_global_products')) || defaultProducts;
+        
         let currentUser = JSON.parse(localStorage.getItem('elgazzar_current_user')) || null;
         let cart = JSON.parse(localStorage.getItem('elgazzar_cart')) || [];
-        let favorites = JSON.parse(localStorage.getItem('elgazzar_favs')) || [];
         let currentFilterCategory = 'all';
 
         window.onload = function() {
-            // جلب أحدث المنتجات من التخزين المشترك أو السحابة
-            fetchProductsFromCloud();
             updateUserUI();
+            renderProducts();
             updateCartUI();
-            updateFavUI();
         };
 
         function showToast(msg) {
@@ -278,29 +219,6 @@
             setTimeout(() => t.remove(), 2500);
         }
 
-        // دالة لمحاكاة ونشر البيانات لتظهر في كل الأجهزة عبر رابط متصفح مشترك
-        function saveProductsToCloud() {
-            localStorage.setItem('elgazzar_global_products', JSON.stringify(products));
-            
-            // بما أن الاستضافة الثابتة (مثل GitHub/Netlify) لا تدعم قاعدة بيانات داخلية بدون سيرفر،
-            // أفضل حل بديل هو تحديث الملف أو استخدام خدمة مثل JSONBin برابط مباشر.
-            // لضمان عملها الآن بين الهواتف على نفس الشبكة، يتم مزامنة التخزين السحابي.
-            renderProducts();
-            showToast("تم نشر المنتج بنجاح وأصبح متاحاً للجميع 🚀");
-        }
-
-        function fetchProductsFromCloud() {
-            const cloudData = localStorage.getItem('elgazzar_global_products');
-            if(cloudData) {
-                products = JSON.parse(cloudData);
-            }
-            const cloudInfo = localStorage.getItem('elgazzar_global_info');
-            if(cloudInfo) {
-                document.getElementById('editableInfoContent').innerHTML = cloudInfo;
-            }
-            renderProducts();
-        }
-
         function isUserAuthorized() {
             return currentUser && currentUser.username === MASTER_ADMIN_USERNAME && currentUser.isAdmin === true;
         }
@@ -308,9 +226,6 @@
         function updateUserUI() {
             const auth = isUserAuthorized();
             const ownerActionsList = document.querySelectorAll('.owner-actions');
-            const infoBody = document.getElementById('editableInfoContent');
-            const saveBtn = document.getElementById('saveInfoBtn');
-            const addImgBtn = document.getElementById('addImgInfoBtn');
             
             if (currentUser) {
                 document.getElementById('authBtnText').innerText = "خروج";
@@ -320,15 +235,7 @@
                     document.getElementById('headerAddBtn').style.display = 'flex';
                     document.getElementById('navAddBtn').style.display = 'flex';
                     document.getElementById('sidebarAddProductItem').style.display = 'flex';
-                    document.getElementById('sidebarChangePassItem').style.display = 'flex';
                     ownerActionsList.forEach(el => el.style.display = 'flex');
-                    
-                    infoBody.contentEditable = "true";
-                    infoBody.style.border = "1px dashed var(--primary)";
-                    infoBody.style.padding = "15px";
-                    infoBody.style.borderRadius = "10px";
-                    saveBtn.style.display = "block";
-                    addImgBtn.style.display = "block";
                 }
             } else {
                 document.getElementById('authBtnText').innerText = "دخول";
@@ -337,47 +244,7 @@
                 document.getElementById('headerAddBtn').style.display = 'none';
                 document.getElementById('navAddBtn').style.display = 'none';
                 document.getElementById('sidebarAddProductItem').style.display = 'none';
-                document.getElementById('sidebarChangePassItem').style.display = 'none';
                 ownerActionsList.forEach(el => el.style.display = 'none');
-                
-                infoBody.contentEditable = "false";
-                infoBody.style.border = "none";
-                saveBtn.style.display = "none";
-                addImgBtn.style.display = "none";
-            }
-        }
-
-        function showInfoPage() {
-            document.getElementById('homeMainContent').style.display = 'none';
-            document.getElementById('infoPageContainer').classList.add('active');
-            document.getElementById('navInfo').classList.add('active');
-            document.getElementById('navHome').classList.remove('active');
-        }
-
-        function showMainHome() {
-            document.getElementById('infoPageContainer').classList.remove('active');
-            document.getElementById('homeMainContent').style.display = 'block';
-            document.getElementById('navHome').classList.add('active');
-            document.getElementById('navInfo').classList.remove('active');
-        }
-
-        function saveInfoContent() {
-            if(!isUserAuthorized()) return;
-            const content = document.getElementById('editableInfoContent').innerHTML;
-            localStorage.setItem('elgazzar_global_info', content);
-            showToast("تم حفظ صفحة المعلومات بنجاح للجميع 💾");
-        }
-
-        function insertImageIntoInfo(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imgHtml = `<br><img src="${e.target.result}" alt="صورة توضيحية"><br>`;
-                    document.getElementById('editableInfoContent').innerHTML += imgHtml;
-                    saveInfoContent();
-                };
-                reader.readAsDataURL(file);
             }
         }
 
@@ -389,31 +256,11 @@
                 renderProducts();
                 showToast("تم تسجيل الخروج");
             } else {
-                openAuthModal();
+                document.getElementById('authModalOverlay').classList.add('active');
             }
         }
 
-        function openAuthModal() { document.getElementById('authModalOverlay').classList.add('active'); }
         function closeAuthModal() { document.getElementById('authModalOverlay').classList.remove('active'); }
-        function openPasswordModal() { document.getElementById('passwordModalOverlay').classList.add('active'); }
-        function closePasswordModal() { document.getElementById('passwordModalOverlay').classList.remove('active'); }
-
-        function handlePasswordChange(e) {
-            e.preventDefault();
-            const oldPass = document.getElementById('oldPassword').value;
-            const newPass = document.getElementById('newPassword').value;
-
-            if (oldPass === currentAdminPassword) {
-                currentAdminPassword = newPass;
-                localStorage.setItem('elgazzar_admin_pass', newPass);
-                closePasswordModal();
-                document.getElementById('oldPassword').value = '';
-                document.getElementById('newPassword').value = '';
-                showToast("تم تغيير كلمة المرور بنجاح 🔐");
-            } else {
-                showToast("كلمة المرور الحالية غير صحيحة");
-            }
-        }
 
         function handleAuthSubmit(e) {
             e.preventDefault();
@@ -432,7 +279,6 @@
         }
 
         function renderProducts() {
-            fetchProductsFromCloud();
             const grid = document.getElementById('productsGrid');
             const q = document.getElementById('searchInput').value.trim().toLowerCase();
             if (!grid) return;
@@ -449,15 +295,11 @@
             const auth = isUserAuthorized();
 
             list.forEach(p => {
-                const isFav = favorites.includes(p.id) ? 'active' : '';
                 grid.innerHTML += `
                     <div class="product-card">
-                        <div class="card-top-btns">
-                            <button class="fav-card-btn ${isFav}" onclick="toggleFavorite(${p.id}, this)"><i class="fa-solid fa-heart"></i></button>
-                        </div>
                         <div class="owner-actions" style="display: ${auth ? 'flex' : 'none'};">
-                            <button class="owner-btn edit-card-btn" onclick="openEditModal(${p.id})" title="تعديل"><i class="fa-solid fa-pen"></i></button>
-                            <button class="owner-btn delete-card-btn" onclick="deleteProduct(${p.id})" title="مسح"><i class="fa-solid fa-trash"></i></button>
+                            <button class="owner-btn edit-card-btn" onclick="openEditModal(${p.id})"><i class="fa-solid fa-pen"></i></button>
+                            <button class="owner-btn delete-card-btn" onclick="deleteProduct(${p.id})"><i class="fa-solid fa-trash"></i></button>
                         </div>
                         <span class="badge">معتمد</span>
                         <div class="img-container"><img src="${p.img}" alt="${p.title}"></div>
@@ -472,16 +314,6 @@
                 `;
             });
         }
-
-        function toggleFavorite(id, btn) {
-            const idx = favorites.indexOf(id);
-            if (idx > -1) { favorites.splice(idx, 1); btn.classList.remove('active'); }
-            else { favorites.push(id); btn.classList.add('active'); }
-            localStorage.setItem('elgazzar_favs', JSON.stringify(favorites));
-            updateFavUI();
-        }
-
-        function updateFavUI() { document.getElementById('favCount').innerText = favorites.length; }
 
         function addToCart(title, img, price) {
             cart.push({ title, img, price });
@@ -508,50 +340,43 @@
             updateCartUI();
         }
 
-        function filterCategory(cat) { 
-            currentFilterCategory = cat; 
-            showMainHome();
-            renderProducts(); 
-        }
-
+        function filterCategory(cat) { currentFilterCategory = cat; renderProducts(); }
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('sidebarOverlay').classList.toggle('active'); }
         function toggleCart() { document.getElementById('cartModal').classList.toggle('active'); }
         
         function openAdminModal() {
-            if(!isUserAuthorized()) { showToast("للمالك فقط"); return; }
+            if(!isUserAuthorized()) return;
             document.getElementById('editProductId').value = '';
             document.getElementById('prodTitle').value = '';
             document.getElementById('prodPrice').value = '';
-            document.getElementById('prodCategory').value = 'السحالي';
             document.getElementById('prodDesc').value = '';
             document.getElementById('prodImgFile').required = true;
             document.getElementById('modalFormTitle').innerText = "➕ إضافة منتج";
-            document.getElementById('submitProductBtn').innerText = "نشر المنتج للجميع";
             document.getElementById('adminModalOverlay').classList.add('active');
         }
 
         function openEditModal(id) {
-            if(!isUserAuthorized()) { showToast("للمالك فقط"); return; }
+            if(!isUserAuthorized()) return;
             const p = products.find(item => item.id === id);
             if(!p) return;
             document.getElementById('editProductId').value = p.id;
             document.getElementById('prodTitle').value = p.title;
             document.getElementById('prodPrice').value = p.price;
-            document.getElementById('prodCategory').value = p.category || 'السحالي';
+            document.getElementById('prodCategory').value = p.category;
             document.getElementById('prodDesc').value = p.desc;
             document.getElementById('prodImgFile').required = false;
             document.getElementById('modalFormTitle').innerText = "✏️ تعديل المنتج";
-            document.getElementById('submitProductBtn').innerText = "حفظ التعديلات";
             document.getElementById('adminModalOverlay').classList.add('active');
         }
 
         function closeAdminModal() { document.getElementById('adminModalOverlay').classList.remove('active'); }
         
         function deleteProduct(id) {
-            if(!isUserAuthorized()) { showToast("للمالك فقط"); return; }
-            if(confirm("هل أنت متأكد من مسح هذا المنتج نهائياً من الموقع؟")) {
+            if(!isUserAuthorized()) return;
+            if(confirm("هل أنت متأكد من مسح المنتج؟")) {
                 products = products.filter(item => item.id !== id);
-                saveProductsToCloud();
+                localStorage.setItem('elgazzar_clean_products', JSON.stringify(products));
+                renderProducts();
             }
         }
 
@@ -564,38 +389,44 @@
             const desc = document.getElementById('prodDesc').value;
             const fInput = document.getElementById('prodImgFile');
 
-            if (editId) {
-                const p = products.find(item => item.id == editId);
-                if (p) {
-                    p.title = title;
-                    p.price = price;
-                    p.category = category;
-                    p.desc = desc;
-                    
-                    if (fInput.files && fInput.files[0]) {
-                        const reader = new FileReader();
-                        reader.onload = function(evt) {
-                            p.img = evt.target.result;
-                            saveProductsToCloud();
-                            closeAdminModal();
-                        };
-                        reader.readAsDataURL(fInput.files[0]);
-                    } else {
-                        saveProductsToCloud();
-                        closeAdminModal();
+            // ضغط الصور تلقائياً لتجنب تجميد المتصفح
+            const processAndSave = (imgSrc) => {
+                if (editId) {
+                    const p = products.find(item => item.id == editId);
+                    if (p) {
+                        p.title = title; p.price = price; p.category = category; p.desc = desc;
+                        if(imgSrc) p.img = imgSrc;
                     }
+                } else {
+                    const newProd = { id: Date.now(), title, price, img: imgSrc || 'img1.jpg', category, desc };
+                    products.unshift(newProd);
                 }
-            } else {
-                if (fInput.files && fInput.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(evt) {
-                        const newProd = { id: Date.now(), title, price, img: evt.target.result, category, desc };
-                        products.unshift(newProd);
-                        saveProductsToCloud();
-                        closeAdminModal();
+                localStorage.setItem('elgazzar_clean_products', JSON.stringify(products));
+                closeAdminModal();
+                renderProducts();
+                showToast("تم الحفظ بنجاح 🚀");
+            };
+
+            if (fInput.files && fInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    // تصغير حجم الصورة قليلاً لمنع امتلاء الذاكرة
+                    const img = new Image();
+                    img.src = evt.target.result;
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const MAX_WIDTH = 500;
+                        const scaleSize = MAX_WIDTH / img.width;
+                        canvas.width = MAX_WIDTH;
+                        canvas.height = img.height * scaleSize;
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        processAndSave(canvas.toDataURL('image/jpeg', 0.7));
                     };
-                    reader.readAsDataURL(fInput.files[0]);
-                }
+                };
+                reader.readAsDataURL(fInput.files[0]);
+            } else {
+                processAndSave(null);
             }
         }
 
@@ -608,4 +439,3 @@
     </script>
 </body>
 </html>
-
