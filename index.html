@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/jpeg" href="img1.jpg">
+    <!-- ربط ملف الـ Manifest والـ Theme -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2ec4b6">
     <title>Elgazzar Animals - Reptiles</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -69,6 +72,10 @@
         .top-search-container input { width: 100%; padding: 11px 40px 11px 15px; background: rgba(20, 27, 34, 0.95); border: 2px solid var(--primary); border-radius: 25px; color: var(--text-light); font-size: 0.9rem; outline: none; }
         .top-search-container i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--primary); }
 
+        /* تنسيق زر التثبيت */
+        .install-container { text-align: center; margin: 15px 0; }
+        #installBtn { display: none; padding: 10px 20px; background: var(--primary); color: #000; border: none; border-radius: 20px; font-weight: 900; font-size: 0.85rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; padding: 20px 5% 50px; }
         .product-card { background: var(--card-bg); border-radius: 14px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; position: relative; }
         .owner-actions { position: absolute; top: 8px; right: 8px; z-index: 10; display: flex; gap: 5px; display: none; }
@@ -87,7 +94,6 @@
         .add-cart-btn { width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text-light); padding: 7px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.75rem; }
         .add-cart-btn:hover { background: var(--primary); color: #000; }
 
-        /* صفحة معلومات الحيوانات */
         .info-page-container { padding: 20px 5% 50px; max-width: 800px; margin: 0 auto; display: none; }
         .info-page-container.active { display: block; }
         .info-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center; position: relative; }
@@ -207,7 +213,7 @@
         </div>
     </div>
 
-    <!-- موديل إضافة معلومات حيوان جديدة (من المعرض مباشرة) -->
+    <!-- موديل إضافة معلومات حيوان جديدة -->
     <div class="modal-overlay" id="animalInfoModalOverlay">
         <div class="modal-box">
             <span class="close-modal-btn" onclick="closeAnimalInfoModal()">&times;</span>
@@ -229,6 +235,12 @@
                 <div class="brand-divider"><i class="fa-solid fa-staff-snake"></i></div>
                 <div class="brand-subtitle">R E P T I L E S</div>
             </div>
+            
+            <!-- زر تثبيت التطبيق يظهر هنا تحت الهيدر أو البانر -->
+            <div class="install-container">
+                <button id="installBtn"><i class="fa-solid fa-download"></i> تثبيت التطبيق على جهازك 📱</button>
+            </div>
+
             <div class="top-search-container">
                 <input type="text" id="searchInput" placeholder="ابحث في المنتجات..." onkeyup="renderProducts()">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -268,6 +280,12 @@
     </nav>
 
     <script>
+        // تسجيل الـ Service Worker ليعمل التطبيق كـ PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('Service Worker Registered Successfully'));
+        }
+
         const BIN_ID = "6a6e4f8df5f4af5e29df1079";
         const API_KEY = "$2a$10$2c/DUQivZwNvSVYRQGnlEuElNizwxbVdOLn9eo6M9BiLikV23lYWG";
 
@@ -671,6 +689,31 @@
             let msg = "طلب جديد:%0A";
             cart.forEach(i => msg += `- ${i.title} (${i.price} ج.م)%0A`);
             window.open(`https://wa.me/201111210854?text=${msg}`, '_blank');
+        }
+
+        // --- كود تثبيت التطبيق (PWA Install Prompt) ---
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (installBtn) {
+                installBtn.style.display = 'inline-block';
+            }
+        });
+
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (!deferredPrompt) return;
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('المستخدم وافق على تثبيت التطبيق');
+                }
+                deferredPrompt = null;
+                installBtn.style.display = 'none';
+            });
         }
     </script>
 </body>
