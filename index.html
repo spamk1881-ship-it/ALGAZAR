@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/jpeg" href="img1.jpg">
-    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2ec4b6">
     <title>Elgazzar Animals - Reptiles</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -66,8 +65,9 @@
         .top-search-container input { width: 100%; padding: 11px 40px 11px 15px; background: rgba(20, 27, 34, 0.95); border: 2px solid var(--primary); border-radius: 25px; color: var(--text-light); font-size: 0.9rem; outline: none; }
         .top-search-container i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--primary); }
 
-        .install-container { text-align: center; margin: 15px 0; }
-        #installBtn { display: none; padding: 10px 20px; background: var(--primary); color: #000; border: none; border-radius: 20px; font-weight: 900; font-size: 0.85rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .request-missing-box { margin-top: 10px; }
+        .request-missing-btn { background: rgba(46, 196, 182, 0.1); border: 1px dashed var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 20px; font-size: 0.78rem; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .request-missing-btn:hover { background: var(--primary); color: #000; }
 
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; padding: 20px 5% 50px; }
         .product-card { background: var(--card-bg); border-radius: 14px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; position: relative; }
@@ -77,8 +77,9 @@
         .delete-card-btn { color: var(--danger); }
         .badge { position: absolute; top: 8px; left: 8px; background: var(--accent); color: #000; font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 6px; z-index: 10; }
         
-        .img-container { width: 100%; height: 200px; background: #070b0d; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; cursor: pointer; }
-        .product-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+        /* تعديل حاوية وعرض الصورة لتظهر بالكامل داخل الكارت */
+        .img-container { width: 100%; height: 210px; background: #0b0f12; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; cursor: pointer; padding: 5px; }
+        .product-card img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.3s ease; }
         .product-card img:hover { transform: scale(1.05); }
 
         .image-zoom-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(8px); z-index: 6000; display: none; align-items: center; justify-content: center; padding: 20px; }
@@ -99,7 +100,7 @@
         .info-page-container { padding: 20px 5% 50px; max-width: 800px; margin: 0 auto; display: none; }
         .info-page-container.active { display: block; }
         .info-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center; position: relative; }
-        .info-img { width: 100px; height: 100px; border-radius: 10px; object-fit: cover; background: #000; border: 1px solid var(--border); flex-shrink: 0; }
+        .info-img { width: 100px; height: 100px; border-radius: 10px; object-fit: contain; background: #000; border: 1px solid var(--border); flex-shrink: 0; padding: 3px; }
         .info-details { flex-grow: 1; }
         .info-title { font-size: 1.1rem; font-weight: 900; color: var(--accent); margin-bottom: 5px; }
         .info-text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
@@ -126,7 +127,7 @@
     </audio>
 
     <div class="music-float-btn" onclick="toggleMusic()">
-        <i class="fa-solid fa-volume-xmark" id="musicIcon"></i>
+        <i class="fa-solid fa-volume-high" id="musicIcon"></i>
     </div>
 
     <div id="toastContainer"></div>
@@ -162,22 +163,23 @@
             <div style="font-size:0.7rem; color:var(--primary);" id="sidebarUserEmail">تسجيل الدخول مطلوب</div>
         </div>
         <ul class="sidebar-menu">
-            <!-- أزرار الإدارة ودخول الحساب داخل الشريط الجانبي -->
-            <a class="sidebar-item" id="sidebarAuthItem" onclick="handleAuthBtnClick()"><div class="sidebar-item-content"><i class="fa-solid fa-user" style="color:var(--primary);"></i><span id="sidebarAuthText">دخول</span></div></a>
             <a class="sidebar-item" id="sidebarAddProductItem" onclick="openAdminModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-plus-circle" style="color:var(--accent);"></i><span>إضافة منتج جديد</span></div></a>
-            
             <a class="sidebar-item" id="sidebarAddInfoItem" onclick="openAnimalInfoModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-circle-info" style="color:var(--primary);"></i><span>إضافة معلومات حيوان</span></div></a>
-            <a class="sidebar-item" id="sidebarChangePassItem" onclick="openChangePassModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-key" style="color:var(--accent);"></i><span>تغيير كلمة المرور</span></div></a>
             
             <div class="sidebar-category-header">الأقسام الأساسية</div>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('all'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-border-all"></i><span>عرض الكل (المنتجات)</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('السحالي'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-dragon"></i><span>السحالي</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('الثعابين'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-staff-snake"></i><span>الثعابين</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span></div></a>
-            <a class="sidebar-item" onclick="showMainSection(); filterCategory('التجهيزات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-box-archive"></i><span>التجهيزات</span></div></a>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('المستلزمات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-box-archive"></i><span>المستلزمات</span></div></a>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('المغذيات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-bowl-food"></i><span>المغذيات</span></div></a>
             
             <div class="sidebar-category-header">معلومات وقواميس</div>
             <a class="sidebar-item" onclick="showInfoSection(); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-book-open" style="color:var(--accent);"></i><span>معلومات الحيوانات</span></div></a>
+            
+            <div class="sidebar-category-header">الحساب</div>
+            <a class="sidebar-item" id="sidebarChangePassItem" onclick="openChangePassModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-key" style="color:var(--accent);"></i><span>تغيير كلمة المرور</span></div></a>
+            <a class="sidebar-item" id="sidebarAuthItem" onclick="handleAuthBtnClick()"><div class="sidebar-item-content"><i class="fa-solid fa-user" style="color:var(--primary);"></i><span id="sidebarAuthText">تسجيل الدخول</span></div></a>
         </ul>
     </aside>
 
@@ -205,7 +207,6 @@
         </div>
     </div>
 
-    <!-- موديل إضافة منتج (مع إضافة خانة العدد) -->
     <div class="modal-overlay" id="adminModalOverlay">
         <div class="modal-box">
             <span class="close-modal-btn" onclick="closeAdminModal()">&times;</span>
@@ -220,7 +221,8 @@
                         <option value="السحالي">السحالي</option>
                         <option value="الثعابين">الثعابين</option>
                         <option value="المفصلية">المفصلية</option>
-                        <option value="التجهيزات">التجهيزات</option>
+                        <option value="المستلزمات">المستلزمات</option>
+                        <option value="المغذيات">المغذيات</option>
                     </select>
                 </div>
                 <div class="form-group"><label>صورة المنتج</label><input type="file" id="prodImgFile" accept="image/*"></div>
@@ -249,14 +251,14 @@
             <div class="brand-logo-banner-img" onclick="openZoomModal('img2.jpg')">
                 <img src="img2.jpg" alt="Elgazzar Animals Logo">
             </div>
-            
-            <div class="install-container">
-                <button id="installBtn"><i class="fa-solid fa-download"></i> تثبيت التطبيق على جهازك 📱</button>
-            </div>
 
             <div class="top-search-container">
                 <input type="text" id="searchInput" placeholder="ابحث في المنتجات..." onkeyup="renderProducts()">
                 <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            
+            <div class="request-missing-box" id="requestMissingBox" style="display:none;">
+                <button class="request-missing-btn" onclick="requestMissingProduct()"><i class="fa-solid fa-bell"></i> لم تجد ما تبحث عنه؟ اطلب إشعاراً عند توفره 🔔</button>
             </div>
         </section>
         <section class="products-grid" id="productsGrid"></section>
@@ -292,11 +294,6 @@
     </nav>
 
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(() => console.log('Service Worker Registered Successfully'));
-        }
-
         const BIN_ID = "6a6e4f8df5f4af5e29df1079";
         const API_KEY = "$2a$10$2c/DUQivZwNvSVYRQGnlEuElNizwxbVdOLn9eo6M9BiLikV23lYWG";
 
@@ -308,6 +305,8 @@
         let currentUser = JSON.parse(localStorage.getItem('elgazzar_current_user')) || null;
         let cart = JSON.parse(localStorage.getItem('elgazzar_cart')) || [];
         let currentFilterCategory = 'all';
+
+        let requestedItems = JSON.parse(localStorage.getItem('elgazzar_requested_items')) || [];
 
         const music = document.getElementById('bgMusic');
         const musicIcon = document.getElementById('musicIcon');
@@ -323,7 +322,7 @@
                     musicIcon.className = "fa-solid fa-volume-high";
                     isMusicPlaying = true;
                 }).catch(e => {
-                    console.log("التشغيل التلقائي يتطلب تفاعل المستخدم:", e);
+                    console.log("خطأ في تشغيل الموسيقى:", e);
                 });
             }
         }
@@ -333,6 +332,26 @@
             fetchProductsFromCloud();
             updateCartUI();
             renderAnimalInfos();
+
+            // محاولة تشغيل الموسيقى فوراً عند فتح التطبيق
+            music.play().then(() => {
+                musicIcon.className = "fa-solid fa-volume-high";
+                isMusicPlaying = true;
+            }).catch(e => {
+                // تفعيل التشغيل تلقائياً مع أول لمسة أو تفاعل للمستخدم في حال منعها المتصفح
+                const unlockAudio = () => {
+                    music.play().then(() => {
+                        musicIcon.className = "fa-solid fa-volume-high";
+                        isMusicPlaying = true;
+                        document.removeEventListener('click', unlockAudio);
+                        document.removeEventListener('touchstart', unlockAudio);
+                    }).catch(err => console.log(err));
+                };
+                document.addEventListener('click', unlockAudio);
+                document.addEventListener('touchstart', unlockAudio);
+                isMusicPlaying = false;
+                musicIcon.className = "fa-solid fa-volume-xmark";
+            });
         };
 
         function showToast(msg) {
@@ -352,6 +371,7 @@
                 });
                 let data = await response.json();
                 products = data.record || [];
+                checkRequestedItemsAvailable();
                 renderProducts();
             } catch (err) {
                 console.log("خطأ في جلب البيانات", err);
@@ -383,7 +403,7 @@
             const ownerActionsList = document.querySelectorAll('.owner-actions');
             
             if (currentUser) {
-                document.getElementById('sidebarAuthText').innerText = "خروج";
+                document.getElementById('sidebarAuthText').innerText = "تسجيل الخروج";
                 document.getElementById('sidebarUserName').innerText = currentUser.username;
                 document.getElementById('sidebarUserEmail').innerText = auth ? "المالك 👑" : "عضو";
                 if(auth) {
@@ -395,7 +415,7 @@
                     ownerActionsList.forEach(el => el.style.display = 'flex');
                 }
             } else {
-                document.getElementById('sidebarAuthText').innerText = "دخول";
+                document.getElementById('sidebarAuthText').innerText = "تسجيل الدخول";
                 document.getElementById('sidebarUserName').innerText = "زائر";
                 document.getElementById('sidebarUserEmail').innerText = "تسجيل الدخول مطلوب";
                 document.getElementById('navAddBtn').style.display = 'none';
@@ -488,12 +508,21 @@
 
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
-            const q = document.getElementById('searchInput').value.trim().toLowerCase();
+            const searchInputEl = document.getElementById('searchInput');
+            const requestMissingBox = document.getElementById('requestMissingBox');
+            const q = searchInputEl.value.trim().toLowerCase();
+            
             if (!grid) return;
             grid.innerHTML = '';
             let list = products;
             if (currentFilterCategory !== 'all') list = list.filter(item => item.category === currentFilterCategory);
             if (q) list = list.filter(item => item.title.toLowerCase().includes(q));
+
+            if (q && list.length === 0) {
+                requestMissingBox.style.display = 'block';
+            } else {
+                requestMissingBox.style.display = 'none';
+            }
 
             if (list.length === 0) {
                 grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-muted);">لا توجد منتجات حالياً</p>';
@@ -524,6 +553,34 @@
                     </div>
                 `;
             });
+        }
+
+        function requestMissingProduct() {
+            const q = document.getElementById('searchInput').value.trim();
+            if(!q) return;
+            if(!requestedItems.includes(q)) {
+                requestedItems.push(q);
+                localStorage.setItem('elgazzar_requested_items', JSON.stringify(requestedItems));
+                showToast(`تم تسجيل طلبك لـ "${q}". سيتم إشعارك فور توفره! 🔔`);
+                document.getElementById('requestMissingBox').style.display = 'none';
+            } else {
+                showToast("لقد طلبت إشعاراً لهذا المنتج من قبل بالفعل.");
+            }
+        }
+
+        function checkRequestedItemsAvailable() {
+            if(requestedItems.length === 0) return;
+            let remainingRequests = [];
+            requestedItems.forEach(reqName => {
+                let found = products.some(p => p.title.toLowerCase().includes(reqName.toLowerCase()));
+                if(found) {
+                    showToast(`🎉 خبر سعيد! المنتج الذي طلبت توفره "${reqName}" وصل الآن للموقع!`);
+                } else {
+                    remainingRequests.push(reqName);
+                }
+            });
+            requestedItems = remainingRequests;
+            localStorage.setItem('elgazzar_requested_items', JSON.stringify(requestedItems));
         }
 
         function openZoomModal(imgSrc) {
@@ -708,6 +765,7 @@
                 saveProductsToCloud();
                 closeAdminModal();
                 renderProducts();
+                checkRequestedItemsAvailable();
             };
 
             if (fInput.files && fInput.files[0]) {
@@ -737,30 +795,6 @@
             let msg = "طلب جديد:%0A";
             cart.forEach(i => msg += `- ${i.title} (${i.price} ج.م)%0A`);
             window.open(`https://wa.me/201111210854?text=${msg}`, '_blank');
-        }
-
-        let deferredPrompt;
-        const installBtn = document.getElementById('installBtn');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            if (installBtn) {
-                installBtn.style.display = 'inline-block';
-            }
-        });
-
-        if (installBtn) {
-            installBtn.addEventListener('click', async () => {
-                if (!deferredPrompt) return;
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('المستخدم وافق على تثبيت التطبيق');
-                }
-                deferredPrompt = null;
-                installBtn.style.display = 'none';
-            });
         }
     </script>
 </body>
