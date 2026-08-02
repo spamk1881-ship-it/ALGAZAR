@@ -180,7 +180,10 @@
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('all'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-border-all"></i><span>عرض الكل (المنتجات)</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('السحالي'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-dragon"></i><span>السحالي</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('الثعابين'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-staff-snake"></i><span>الثعابين</span></div></a>
-            <a class="sidebar-item" onclick="showMainSection(); filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span></div></a>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span
+             ></div></a>
+               <a class="sidebar-item" onclick="showMainSection(); filterCategory(حيوانات برية); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-"></i><span>حيوانات برية</span></div></a>
+                 <a class="sidebar-item" onclick="showMainSection(); filterCategory('الاكسسوارات '); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-"></i><span>الاكسسوارات</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('التجهيزات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-box-archive"></i><span>التجهيزات</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('المغذيات والمستلزمات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-bowl-food" style="color:var(--accent);"></i><span>المغذيات والمستلزمات</span></div></a>
             
@@ -315,7 +318,7 @@
 
             <div class="checkout-section-title">🚚 طريقة الاستلام</div>
             <div style="margin-bottom: 10px; font-size: 0.85rem;">
-                <label><input type="radio" name="shippingMethod" value="155" checked onchange="updateTotalCalculation()"> التوصيل اوبر (EGP 155.00)</label><br>
+                <label><input type="radio" name="shippingMethod" value="155" checked onchange="updateTotalCalculation()"> التوصيل اوبر (EG 155)</label><br>
                 <label><input type="radio" name="shippingMethod" value="0" onchange="updateTotalCalculation()"> استلام من المتجر (مجاناً)</label>
             </div>
 
@@ -702,13 +705,4 @@
             if(email) msg += `• البريد: ${email}%0A`;
             if(notes) msg += `• ملاحظات: ${notes}%0A`;
             msg += `%0A*ملخص الفاتورة:*%0A`;
-            msg += `• المجموع: EGP ${subtotal}.00%0A`;
-            msg += `• طريقة الاستلام: ${shippingText}%0A`;
-            msg += `• الإجمالي النهائي: *EGP ${total}.00*%0A`;
-            msg += `• حالة الدفع: تم الدفع مسبقاً (مرفق الإيصال)`;
-
-            window.open(`https://wa.me/201111210854?text=${msg}`, '_blank');
-        }
-    </script>
-</body>
-</html>
+            m
