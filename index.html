@@ -117,6 +117,8 @@
         .checkout-table th, .checkout-table td { border: 1px solid var(--border); padding: 8px; text-align: right; }
         .checkout-table th { background: rgba(255,255,255,0.03); color: var(--primary); }
 
+        .payment-notice { background: rgba(255, 159, 28, 0.1); color: var(--accent); padding: 10px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 10px; border: 1px dashed var(--accent); }
+
         .checkout-btn { width: 100%; padding: 12px; background: #25d366; color: #fff; border: none; border-radius: 8px; font-weight: 900; font-size: 1rem; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
 
         .phone-float { position: fixed; bottom: 70px; left: 15px; background: #2ec4b6; color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; z-index: 1000; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
@@ -300,13 +302,15 @@
             <div class="checkout-section-title">💬 ملاحظات إضافية (اختياري)</div>
             <div class="form-group"><textarea id="billNotes" rows="2" placeholder="مثال: ملحوظة خاصة بتسليم الطلب..."></textarea></div>
 
-            <div class="checkout-section-title">💳 طريقة الدفع</div>
-            <div style="margin-bottom: 15px; font-size: 0.85rem;">
-                <label><input type="radio" name="paymentMethod" value="الدفع نقداً عند الاستلام" checked> الدفع نقداً عند الاستلام</label><br>
-                <label><input type="radio" name="paymentMethod" value="الدفع مقدم"> دفع مقدم (تحويل)</label>
+            <div class="checkout-section-title">💳 الدفع المسبق</div>
+            <div class="payment-notice">⚠️ تنبيه: يتم دفع قيمة الطلب مسبقاً قبل شحن المنتجات وتأكيد الطلب.</div>
+            <div class="form-group">
+                <label>إيصال تحويل الدفع المسبق *</label>
+                <input type="file" id="billReceipt" accept="image/*" required>
+                <small style="color:var(--text-muted); font-size:0.75rem;">يرجى إرفاق صورة إيصال التحويل لإتمام الطلب</small>
             </div>
 
-            <table class="checkout-table">
+            <table class="checkout-table" style="margin-top: 15px;">
                 <tr><td>المجموع الفرعي</td><td id="subTotalDisplay">0 ج.م</td></tr>
                 <tr><td>الشحن</td><td id="shippingCostDisplay">155 ج.م</td></tr>
                 <tr><th>الإجمالي النهائي</th><th id="grandTotalDisplay" style="color:var(--accent);">0 ج.م</th></tr>
@@ -627,9 +631,15 @@
             const name = document.getElementById('billName').value.trim();
             const address = document.getElementById('billAddress').value.trim();
             const phone = document.getElementById('billPhone').value.trim();
+            const receiptInput = document.getElementById('billReceipt');
             
             if(!name || !address || !phone) {
                 showToast("الرجاء إكمال بيانات الفوترة (الاسم، العنوان، والهاتف)");
+                return;
+            }
+
+            if(!receiptInput.files || receiptInput.files.length === 0) {
+                showToast("الرجاء إرفاق صورة إيصال الدفع المسبق لتأكيد الطلب");
                 return;
             }
 
@@ -637,13 +647,12 @@
             let email = document.getElementById('billEmail').value;
             let notes = document.getElementById('billNotes').value;
             let shippingText = document.querySelector('input[name="shippingMethod"]:checked').value === "155" ? "شحن (EGP 155)" : "استلام من المتجر";
-            let payment = document.querySelector('input[name="paymentMethod"]:checked').value;
             
             let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
             let shipping = Number(document.querySelector('input[name="shippingMethod"]:checked').value);
             let total = subtotal + shipping;
 
-            let msg = `*طلب جديد عبر الموقع* 🛒%0A%0A`;
+            let msg = `*طلب جديد عبر الموقع (دفع مسبق)* 🛒%0A%0A`;
             msg += `*المنتجات المطلوبة:*%0A`;
             cart.forEach(i => msg += `- ${i.title} (EGP ${i.price})%0A`);
             msg += `%0A*بيانات العميل:*%0A`;
@@ -656,7 +665,7 @@
             msg += `• المجموع: EGP ${subtotal}.00%0A`;
             msg += `• طريقة الاستلام: ${shippingText}%0A`;
             msg += `• الإجمالي النهائي: *EGP ${total}.00*%0A`;
-            msg += `• طريقة الدفع: ${payment}`;
+            msg += `• حالة الدفع: تم الدفع مسبقاً (مرفق الإيصال)`;
 
             window.open(`https://wa.me/201111210854?text=${msg}`, '_blank');
         }
