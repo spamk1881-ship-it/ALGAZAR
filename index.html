@@ -160,7 +160,7 @@
 
     <div class="image-zoom-modal" id="imageZoomModal" onclick="closeZoomModal()">
         <span class="close-zoom-btn">&times;</span>
-        <img id="zoomedImg" src="" alt="Zoomed Image">
+        <img id="zoomedImg" alt="Zoomed Image">
     </div>
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
@@ -172,6 +172,7 @@
             <div style="font-size:0.7rem; color:var(--primary);" id="sidebarUserEmail">تسجيل الدخول مطلوب</div>
         </div>
         <ul class="sidebar-menu">
+            <!-- عناصر التحكم للمالك -->
             <a class="sidebar-item" id="sidebarAddProductItem" onclick="openAdminModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-plus-circle" style="color:var(--accent);"></i><span>إضافة منتج جديد</span></div></a>
             <a class="sidebar-item" id="sidebarAddInfoItem" onclick="openAnimalInfoModal(); toggleSidebar();" style="display:none;"><div class="sidebar-item-content"><i class="fa-solid fa-circle-info" style="color:var(--primary);"></i><span>إضافة معلومات حيوان</span></div></a>
             
@@ -180,12 +181,17 @@
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('السحالي'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-dragon"></i><span>السحالي</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('الثعابين'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-staff-snake"></i><span>الثعابين</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span></div></a>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('التجهيزات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-box-archive"></i><span>التجهيزات</span></div></a>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('المغذيات والمستلزمات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-bowl-food" style="color:var(--accent);"></i><span>المغذيات والمستلزمات</span></div></a>
             
             <div class="sidebar-category-header">معلومات وقواميس</div>
             <a class="sidebar-item" onclick="showInfoSection(); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-book-open" style="color:var(--accent);"></i><span>معلومات الحيوانات</span></div></a>
             
             <div class="sidebar-category-header">الحساب</div>
             <a class="sidebar-item" id="sidebarAuthItem" onclick="handleAuthBtnClick()"><div class="sidebar-item-content"><i class="fa-solid fa-user" style="color:var(--primary);"></i><span id="sidebarAuthText">تسجيل الدخول</span></div></a>
+            
+            <!-- زر تغيير كلمة المرور في الأسفل تماماً -->
+            <a class="sidebar-item" id="sidebarChangePassItem" onclick="openChangePasswordModal(); toggleSidebar();" style="display:none; border-top: 1px solid var(--border); margin-top: 15px;"><div class="sidebar-item-content"><i class="fa-solid fa-key" style="color:var(--accent);"></i><span>تغيير كلمة المرور</span></div></a>
         </ul>
 
         <div class="sidebar-socials">
@@ -204,7 +210,20 @@
             <form onsubmit="handleAuthSubmit(event)">
                 <div class="form-group"><label>اسم المستخدم</label><input type="text" id="authUsername" required></div>
                 <div class="form-group"><label>كلمة المرور</label><input type="password" id="authPassword" required></div>
-                <button type="submit" class="submit-btn">دخول</button>
+                <button type="submit" class="submit-btn">تسجيل الدخول</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة تغيير كلمة المرور -->
+    <div class="modal-overlay" id="changePasswordModalOverlay">
+        <div class="modal-box">
+            <span class="close-modal-btn" onclick="closeChangePasswordModal()">&times;</span>
+            <h2 style="color:var(--accent); margin-bottom:12px; font-size:1.1rem; text-align:center;">🔑 تغيير كلمة المرور</h2>
+            <form onsubmit="handlePasswordChangeSubmit(event)">
+                <div class="form-group"><label>كلمة المرور الحالية</label><input type="password" id="currentPassInput" required></div>
+                <div class="form-group"><label>كلمة المرور الجديدة</label><input type="password" id="newPassInput" required></div>
+                <button type="submit" class="submit-btn">حفظ كلمة المرور</button>
             </form>
         </div>
     </div>
@@ -223,7 +242,8 @@
                         <option value="السحالي">السحالي</option>
                         <option value="الثعابين">الثعابين</option>
                         <option value="المفصلية">المفصلية</option>
-                        <option value="المستلزمات">المستلزمات</option>
+                        <option value="التجهيزات">التجهيزات</option>
+                        <option value="المغذيات والمستلزمات">المغذيات والمستلزمات</option>
                     </select>
                 </div>
                 <div class="form-group"><label>صورة المنتج</label><input type="file" id="prodImgFile" accept="image/*"></div>
@@ -295,7 +315,7 @@
 
             <div class="checkout-section-title">🚚 طريقة الاستلام</div>
             <div style="margin-bottom: 10px; font-size: 0.85rem;">
-                <label><input type="radio" name="shippingMethod" value="155" checked onchange="updateTotalCalculation()"> سعر الشحن (EGP 155.00)</label><br>
+                <label><input type="radio" name="shippingMethod" value="155" checked onchange="updateTotalCalculation()"> التوصيل اوبر (EGP 155.00)</label><br>
                 <label><input type="radio" name="shippingMethod" value="0" onchange="updateTotalCalculation()"> استلام من المتجر (مجاناً)</label>
             </div>
 
@@ -303,7 +323,7 @@
             <div class="form-group"><textarea id="billNotes" rows="2" placeholder="مثال: ملحوظة خاصة بتسليم الطلب..."></textarea></div>
 
             <div class="checkout-section-title">💳 الدفع المسبق</div>
-            <div class="payment-notice">⚠️ تنبيه:رقم تحويل فودافون كاش 01120642759 يتم دفع قيمة الطلب مسبقاً قبل شحن المنتجات وتأكيد الطلب.</div>
+            <div class="payment-notice">⚠️ تنبيه: رقم تحويل فودافون كاش 01120642759 يتم دفع قيمة الطلب مسبقاً قبل شحن المنتجات وتأكيد الطلب.</div>
             <div class="form-group">
                 <label>إيصال تحويل الدفع المسبق *</label>
                 <input type="file" id="billReceipt" accept="image/*" required>
@@ -312,7 +332,7 @@
 
             <table class="checkout-table" style="margin-top: 15px;">
                 <tr><td>المجموع الفرعي</td><td id="subTotalDisplay">0 ج.م</td></tr>
-                <tr><td>الشحن</td><td id="shippingCostDisplay">155 ج.م</td></tr>
+                <tr><td>التوصيل اوبر</td><td id="shippingCostDisplay">155 ج.م</td></tr>
                 <tr><th>الإجمالي النهائي</th><th id="grandTotalDisplay" style="color:var(--accent);">0 ج.م</th></tr>
             </table>
         </div>
@@ -406,6 +426,7 @@
                     document.getElementById('navAddBtn').style.display = 'flex';
                     document.getElementById('sidebarAddProductItem').style.display = 'flex';
                     document.getElementById('sidebarAddInfoItem').style.display = 'flex';
+                    document.getElementById('sidebarChangePassItem').style.display = 'flex';
                     document.getElementById('addNewInfoBtn').style.display = 'inline-block';
                 }
             } else {
@@ -415,6 +436,7 @@
                 document.getElementById('navAddBtn').style.display = 'none';
                 document.getElementById('sidebarAddProductItem').style.display = 'none';
                 document.getElementById('sidebarAddInfoItem').style.display = 'none';
+                document.getElementById('sidebarChangePassItem').style.display = 'none';
                 document.getElementById('addNewInfoBtn').style.display = 'none';
             }
         }
@@ -437,6 +459,23 @@
                 localStorage.setItem('elgazzar_current_user', JSON.stringify(currentUser));
                 closeAuthModal(); updateUserUI(); renderProducts(); showToast("أهلاً يا مالك الموقع 👑");
             } else { showToast("خطأ في البيانات"); }
+        }
+
+        function openChangePasswordModal() { document.getElementById('changePasswordModalOverlay').classList.add('active'); }
+        function closeChangePasswordModal() { document.getElementById('changePasswordModalOverlay').classList.remove('active'); }
+
+        function handlePasswordChangeSubmit(e) {
+            e.preventDefault();
+            const currentPass = document.getElementById('currentPassInput').value;
+            const newPass = document.getElementById('newPassInput').value;
+            if(currentPass === currentAdminPassword) {
+                currentAdminPassword = newPass;
+                localStorage.setItem('elgazzar_admin_pass', newPass);
+                closeChangePasswordModal();
+                showToast("تم تغيير كلمة المرور بنجاح 🔑");
+            } else {
+                showToast("كلمة المرور الحالية غير صحيحة");
+            }
         }
 
         function showMainSection() {
@@ -646,10 +685,11 @@
             let city = document.getElementById('billCity').value;
             let email = document.getElementById('billEmail').value;
             let notes = document.getElementById('billNotes').value;
-            let shippingText = document.querySelector('input[name="shippingMethod"]:checked').value === "155" ? "شحن (EGP 155)" : "استلام من المتجر";
+            let shippingSelection = document.querySelector('input[name="shippingMethod"]:checked').value;
+            let shippingText = shippingSelection !== "0" ? "التوصيل اوبر" : "استلام من المتجر";
             
             let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
-            let shipping = Number(document.querySelector('input[name="shippingMethod"]:checked').value);
+            let shipping = Number(shippingSelection);
             let total = subtotal + shipping;
 
             let msg = `*طلب جديد عبر الموقع (دفع مسبق)* 🛒%0A%0A`;
@@ -672,4 +712,3 @@
     </script>
 </body>
 </html>
-
