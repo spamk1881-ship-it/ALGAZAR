@@ -180,11 +180,10 @@
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('all'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-border-all"></i><span>عرض الكل (المنتجات)</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('السحالي'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-dragon"></i><span>السحالي</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('الثعابين'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-staff-snake"></i><span>الثعابين</span></div></a>
-            <a class="sidebar-item" onclick="showMainSection(); filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span
-             ></div></a>
-               <a class="sidebar-item" onclick="showMainSection(); filterCategory(حيوانات برية); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-"></i><span>حيوانات برية</span></div></a>
-                 <a class="sidebar-item" onclick="showMainSection(); filterCategory('الاكسسوارات '); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-"></i><span>الاكسسوارات</span></div></a>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('حيوانات برية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-paw"></i><span>حيوانات برية</span></div></a>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('المفصلية'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-spider"></i><span>المفصلية</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('التجهيزات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-box-archive"></i><span>التجهيزات</span></div></a>
+            <a class="sidebar-item" onclick="showMainSection(); filterCategory('اكسسوارات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-gem"></i><span>اكسسوارات</span></div></a>
             <a class="sidebar-item" onclick="showMainSection(); filterCategory('المغذيات والمستلزمات'); toggleSidebar();"><div class="sidebar-item-content"><i class="fa-solid fa-bowl-food" style="color:var(--accent);"></i><span>المغذيات والمستلزمات</span></div></a>
             
             <div class="sidebar-category-header">معلومات وقواميس</div>
@@ -244,8 +243,10 @@
                     <select id="prodCategory">
                         <option value="السحالي">السحالي</option>
                         <option value="الثعابين">الثعابين</option>
+                        <option value="حيوانات برية">حيوانات برية</option>
                         <option value="المفصلية">المفصلية</option>
                         <option value="التجهيزات">التجهيزات</option>
+                        <option value="اكسسوارات">اكسسوارات</option>
                         <option value="المغذيات والمستلزمات">المغذيات والمستلزمات</option>
                     </select>
                 </div>
@@ -318,7 +319,7 @@
 
             <div class="checkout-section-title">🚚 طريقة الاستلام</div>
             <div style="margin-bottom: 10px; font-size: 0.85rem;">
-                <label><input type="radio" name="shippingMethod" value="155" checked onchange="updateTotalCalculation()"> التوصيل اوبر (EG 155)</label><br>
+                <label><input type="radio" name="shippingMethod" value="155" checked onchange="updateTotalCalculation()"> التوصيل اوبر ويوجد محافظات  (بي الاتفاق حسب  مكانك)</label><br>
                 <label><input type="radio" name="shippingMethod" value="0" onchange="updateTotalCalculation()"> استلام من المتجر (مجاناً)</label>
             </div>
 
@@ -335,7 +336,7 @@
 
             <table class="checkout-table" style="margin-top: 15px;">
                 <tr><td>المجموع الفرعي</td><td id="subTotalDisplay">0 ج.م</td></tr>
-                <tr><td>التوصيل اوبر</td><td id="shippingCostDisplay">155 ج.م</td></tr>
+                <tr><td>التوصيل اوبر ويوجد محافظات</td><td id="shippingCostDisplay">بالاتفاق</td></tr>
                 <tr><th>الإجمالي النهائي</th><th id="grandTotalDisplay" style="color:var(--accent);">0 ج.م</th></tr>
             </table>
         </div>
@@ -357,15 +358,7 @@
         const BIN_ID = "6a6e4f8df5f4af5e29df1079";
         const API_KEY = "$2a$10$2c/DUQivZwNvSVYRQGnlEuElNizwxbVdOLn9eo6M9BiLikV23lYWG";
         const MASTER_ADMIN_USERNAME = "elgazzar";
-        let currentAdminPassword = localStorage.getItem('elgazzar_admin_pass') || "ALGAZAR admin01111210854";
-        
-        let products = [
-            { id: 1, title: "الورل الصحراوى", price: 675, oldPrice: 750, img: "img1.jpg", category: "السحالي", desc: "ورل صحراوي نشط وبصحة ممتازة." },
-            { id: 2, title: "Adult Hypo Leopared Gecko", price: 4100, oldPrice: 4500, img: "img1.jpg", category: "السحالي", desc: "جيكو ليوبارد بالغ بألوان مميزة." },
-            { id: 3, title: "Albino -P Leopared Gecko", price: 4500, oldPrice: 0, img: "img1.jpg", category: "السحالي", desc: "ألبينو بي ليوبارد جيكو نادر." },
-            { id: 4, title: "ثعبان الأرقم الصحراوى وايت مورف", price: 900, oldPrice: 1000, img: "img1.jpg", category: "الثعابين", desc: "ثعبان أرقم وايت مورف هادئ." }
-        ];
-        
+        let currentAdminPassword = localStorage.getItem('elgazzar_admin_pass') || "ALGAZAR admin01111210854";    
         let animalInfos = JSON.parse(localStorage.getItem('elgazzar_animal_infos')) || [];
         let currentUser = JSON.parse(localStorage.getItem('elgazzar_current_user')) || null;
         let cart = JSON.parse(localStorage.getItem('elgazzar_cart')) || [];
@@ -705,4 +698,13 @@
             if(email) msg += `• البريد: ${email}%0A`;
             if(notes) msg += `• ملاحظات: ${notes}%0A`;
             msg += `%0A*ملخص الفاتورة:*%0A`;
-            m
+            msg += `• المجموع: EGP ${subtotal}.00%0A`;
+            msg += `• طريقة الاستلام: ${shippingText}%0A`;
+            msg += `• الإجمالي النهائي: *EGP ${total}.00*%0A`;
+            msg += `• حالة الدفع: تم الدفع مسبقاً (مرفق الإيصال)`;
+
+            window.open(`https://wa.me/201111210854?text=${msg}`, '_blank');
+        }
+    </script>
+</body>
+</html>
